@@ -1,0 +1,234 @@
+/*Charte graphique 
+Fonts : 
+    Titre : Roboto bolt
+    Autre : Roboto regular
+
+Colors :
+    #100f0f (noir)
+    #efefef (gris clair)
+    #1fc36c (vert)
+    #E31E21 (red for tendance)
+$bg-color
+*/
+
+body{
+    background-color: #100f0f ;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+
+h1,h2,h3{
+    font-weight : bold;
+    color: #1fc36c;
+}
+
+/* INPUT */
+input, select{
+    color: #efefef;
+    background-color: #0f100f;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: right;
+    padding: 10px;
+    margin: 2px 0;
+    min-width: 80%;
+    border-radius: 4px;
+    border-color: #1fc36c;
+    border-style: solid;
+    border-width: 1px;
+    -ms-box-sizing:content-box;
+    -moz-box-sizing:content-box;
+    box-sizing:content-box;
+    -webkit-box-sizing:content-box; 
+}
+
+input:disabled{
+    color:#efefef;
+    background-color:#0f100f;
+    border-color: #efefef;
+    border-width: 1px;
+}
+
+input:focus{
+    background-color: #454545;
+    border-color: #1fc36c;
+}
+
+.centre{
+    text-align: center;
+}
+
+.margin_bottom{
+    margin-bottom: 20px;
+}
+
+.tempo{
+    color : rgb(118, 118, 118);
+}
+
+/* BLOCK */
+.block {
+    display: block;
+    
+}
+
+/*Mise en forme diverses*/
+.top_title{
+    color: #efefef ;
+    font-size: x-large;
+    padding: 10px;
+    text-align: center;
+  
+}
+
+.text_1,.text_2, .text_3{
+    font-size: 1em;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.8em 0;
+}
+.text_2{
+    font-size: 1.5em;
+    padding: 1.5em 0;
+    font-weight: bold;
+}
+.text_3{
+    font-size: 1.2em;
+    padding: 1em 0;
+}
+
+.paramA{
+    position: fixed;
+    right: 10px;
+    top: 10px;
+}
+.paramB{
+    display: inline;
+}
+
+.top_ban{
+    left:0;
+    top:0;
+    position: fixed;
+    background-color:#0f100f;
+    width: 100%;
+    padding: 10px;   
+}
+
+.margetop{
+    margin:70px 0 0 0;
+}
+
+/*   BOUTON 1  */
+.button, .button_r, .button_g, .button_bigger_r, .button_bigger_g {
+    background-color: #1fc36c;
+    border: none;
+    color: white;
+    padding: 10px 32px;
+    text-decoration: none;
+    display: inline;
+    font-size: 16px;
+    margin: 2px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    /*display: block;*/
+}
+.button_bigger_r, .button_bigger_g{
+    padding: 13px 10px;
+    margin: 25px 0px;
+    min-width: 80%;
+
+}
+.button:hover {
+    background-color: #1a9a55;
+}
+.button_r, .button_bigger_r {
+    background-color: #db3e33;
+}
+.button_r:hover, .button_bigger_r:hover {
+    background-color: #e51f14;
+}
+.button_g, .button_bigger_g {
+    background-color: #efefefb0;
+    color:#100f0f;
+}
+.button_g:hover, .button_bigger_g:hover {
+    background-color: #c7c7c7b0;
+}
+.button_transparent {
+    background-color: #100f0f;
+    border: none;
+    color: none;
+    text-decoration: none;
+    
+}
+
+/*   BOUTON 2  */
+.Wallet_value {
+    background-color: #100f0f;
+    border: none;
+    color: white;
+    padding: 20px 32px;
+    text-decoration: none;
+    /*display: inline-block;*/
+    font-size: 2em;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: inline;
+    width: 100%;
+}
+
+/*Tableaux*/
+table {
+    border-collapse: collapse;
+    width: 100vw;
+}
+
+table, th, td, .ligne {  
+    padding: 5px;
+}
+
+.ligne{
+    border-bottom: 1px solid #efefefb0;
+}
+
+.table_1{
+    font-size: medium;
+    font-weight: bold;
+}
+.table_2{
+    color: #efefefb0;
+    font-size: 0.8em;
+}
+.table_3{
+    font-size: 0.8em;
+}
+.table_title{
+    text-align: left;
+    color: #1fc36c;
+    font-weight: 100;
+    font-size: 0.8em;
+}
+
+/*symbols on left side of the input and select*/
+.symbol_euro, .symbol_euro_small, .symbol_qty, .symbol_qty_small, .symbol_search{
+    background-position:left;
+    background-repeat:no-repeat;
+    width:260px; 
+    background-size:20px; 
+    background-position-x: 10px;
+}
+.symbol_euro, .symbol_euro_small {
+    background-image:url(../static/pictures/euro.PNG);
+}
+.symbol_qty, .symbol_qty_small {
+    background-image:url(../static/pictures/coins.PNG);
+}
+.symbol_search {
+    background-image:url(../static/pictures/search.PNG);
+}
+.symbol_euro_small, .symbol_qty_small {
+    width:140px; 
+}
+
