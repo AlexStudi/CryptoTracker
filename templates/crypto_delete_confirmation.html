@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class = "top_ban ligne"> <!--Top menu bar-->
+    <span class="top_title">Confirmez suppression</span>
+
+</div>
+<div class="centre">
+    {% if transaction_delete %}
+        {% for trans in transaction_delete %}
+            <form  action="/delete_transaction2/{{trans.crypto_transaction_id}}" method="get" >
+                <div class = "text_1 margetop">Voulez-vous supprimer définitivement la transaction n°{{trans.crypto_transaction_id}} ?</div>
+                <div class = "text_1">Date transaction : {{trans.crypto_transaction_date}}</div>
+                <div class="text_1">Montant transaction : {{trans.crypto_purchase_price}} €</div>
+                <div class="text_2">
+                    <img src="{{trans.crypto_logo}}" alt="logo {{trans.crypto_name}}" height="30">
+                    <span>{{trans.crypto_qty}} {{trans.crypto_symbol}} </span>
+                    <div>({{trans.crypto_name}})</div>
+                </div>
+                
+                <button class="button_bigger_g"> 
+                    <img src="../static/pictures/bin_black.PNG" alt="Supprimer" height="20"> 
+                    <span> Je confirme la suppression</span> 
+                </button>
+            </form>
+            <form action="/wallet_edit" method="get">
+                <button class="button_bigger_g">
+                    <img src="../static/pictures/Back_black.PNG" alt="Annuler suppression" height="20">
+                    <span>J'annule la suppression</span>
+                </button>
+            </form>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
+

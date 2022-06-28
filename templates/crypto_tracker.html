@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class = "top_ban ligne"> <!--Top menu bar-->
+    <span class="top_title">Crypto Tracker</span>
+    <span class="paramA">
+        <!--Bouton "crayon" Modifier transaction(s) -->
+        <form action="/wallet_edit" method="get" get class="paramB">
+            <button class="button_transparent"> 
+                <img 
+                    src="../static/pictures/edit.PNG" 
+                    alt="Update" height="20">
+            </button>
+        </form>
+        <!--Bouton "+" Ajout d'une transaction-->
+        <form action="/cryptoadd" method="get" get class="paramB">
+            <button class="button_transparent"> 
+                <img 
+                    src="../static/pictures/add.PNG" 
+                    alt="Update" height="20">
+            </button>
+        </form>
+    </span> 
+</div>
+
+<!--Wallet total value-->
+<div>
+{% if wallet_detailled.crypto_qty[0] %}
+<div class="centre margetop">
+    <form action="/crypto_history">
+        <button type="submit" class = "Wallet_value background">
+            valeur {{wallet_detailled.crypto_total_value.sum()}} € 
+            <br>
+            profit {{wallet_detailled.crypto_total_profit.sum()}} €
+        </button> <!-- TODO afficher nombre entier avec séparateur de milliers-->
+    </form>
+</div>
+
+<table>
+    <thead class = "ligne"><!--En tête tableau recap par crypto-->
+        <tr>
+            <th></th>
+            <th class = "table_2" colspan="2">Portefeuille</th>
+            <th class = "table_2">24h</th>
+            <th class = "table_2">7j</th>
+        </tr>
+    </thead>
+    <tbody><!--Tableau recap par crypto-->
+        {% for i in wallet_detailled %}
+        <tr>
+            <td rowspan="3"><img src="{{i.crypto_logo}}" alt="logo {{i.crypto_name}}" height="30"></td>
+            <td colspan="2">
+                <span class = "table_3">{{i.crypto_qty}}</span>
+                <span class = "table_3">{{i.crypto_symbol}}</span>
+                <span class = "table_2">({{i.crypto_name}})</span>
+            </td>
+            <td><img src="{{i.tendancy_24h}}" alt="logo tendance" height="30"></td>
+            <td><img src="{{i.tendancy_7d}}" alt="logo tendance" height="30"></td>    
+        </tr>
+        <tr>    
+            <td class = "table_3">valeur</td>
+          	<td class = "table_3">{{i.crypto_total_value}} €</td>
+            <td class = "table_3">{{i.percent_change_24h}}%</td>
+          	<td class = "table_3">{{i.percent_change_7d}}%</td>
+        </tr>
+        <tr class= "ligne">
+            <td class = "table_3">profit</td>
+          	<td class = "table_3">{{i.crypto_total_profit}} €</td>
+          	<td colspan="2" class = "table_2">1{{i.crypto_symbol}} = {{i.crypto_actual_value}}€</td>
+        </tr>
+        {% endfor %}
+</tbody>
+</table>
+
+{% else %}
+<h1>Votre portefeuille de crypto est vide</h1> <!--Message affiché si aucun article-->
+<img src="../static/pictures/streamlinehq-mail-chat-bubble-warning-mail-600.PNG" alt="Message information" height="50">
+{% endif %}
+</div>
+
+{% endblock %}

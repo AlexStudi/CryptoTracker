@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class="top_ban ligne"> <!--Top menu bar-->
+    <span class="top_title">Crypto Edition</span>
+    <span class="paramA">
+        <!--Bouton "graph" Retourner au crypto tracker-->
+        <form action="/" method="get" get class="paramB">
+            <button class="button_transparent"> 
+                <img 
+                    src="./static/pictures/home.PNG" 
+                    alt="Update" height="20">
+            </button>
+        </form>
+        <!--Bouton "+" Ajout d'une transaction-->
+        <form action="/cryptoadd" method="get" get class="paramB">
+            <button class="button_transparent"> 
+                <img 
+                    src="../static/pictures/add.PNG" 
+                    alt="Update" height="20">
+            </button>
+        </form>
+    </span> 
+</div>
+
+
+<!--Liste des cryptos en portefeuille-->
+{% if wallet %}
+  <!--TODO revoir le css pour supprimer cette div-->
+<table class ="margetop">
+
+    <tbody><!--Contenu tableau-->   
+        {% for entry in wallet %}
+            <tr><!--ligne 1 : logo + id transaction-->
+                <td><img src="{{entry.crypto_logo}}" alt="logo {{entry.crypto_name}}" height="30"></td>
+                <td colspan = "3">
+                    <span>transaction n° {{entry.crypto_transaction_id}}</span>
+                    <br> 
+                    <span>{{entry.crypto_transaction_date}}</span>
+                </td>
+            </tr>
+            <form 
+            action="/update_transaction/{{entry.crypto_transaction_id}}" 
+            name = "editForm"
+            method="POST">
+                <tr><!--ligne 2 :-->
+                    <td colspan = "2" class = "table_3">{{entry.crypto_symbol}}</td>
+                    <td>
+                        <input 
+                        class = "{{entry.crypto_transaction_id}} symbol_qty_small"
+                        name = "crypto_qty" 
+                        value='{{entry.crypto_qty}}'
+                        disabled
+                        type="number" 
+                        step="any"
+                        >
+                    </td>
+                    <td>
+                        <button 
+                        id={{entry.crypto_transaction_id}}
+                        type="submit" 
+                        name="name" 
+                        value="Modifier" 
+                        onclick="return modifier(this.id)"
+                        class="button_g"
+                        >
+                            <img 
+                            
+                            class = "image_abc" 
+                            
+                            src="../static/pictures/edit.PNG"
+                            alt="édition" 
+                            height="20">
+                        </button>
+                    </td>
+                </tr>
+                <tr class= "ligne"><!--ligne 3 :-->
+                    <td  colspan = "2" class = "table_3">prix total achat</td>
+                    <td>
+                        <input 
+                        class = "{{entry.crypto_transaction_id}} symbol_euro_small"
+                        name = "crypto_purchase_price" 
+                        value='{{entry.crypto_purchase_price}}' 
+                        disabled
+                        type="number" 
+                        step="0.01">
+                    </td>
+            </form>
+                    <td>
+                        <form action="/delete_transaction/{{entry.crypto_transaction_id}}">
+                            <button type="submit" value="Supprimer" class="button_r">
+                                <img 
+                                src="../static/pictures/bin.PNG" 
+                                alt="édition" 
+                                height="20"
+                                >
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+        {% endfor %}       
+    </tbody>   
+</table>
+{% else %}
+ <!--Message affiché si aucun article-->
+<img src="../static/pictures/info.PNG" alt="Message information" width="50">
+<span class="text_3">Votre portefeuille de crypto est vide</span>
+{% endif %}
+
+<script>
+    function modifier(clicked_id) {
+        value = document.getElementById(clicked_id).value;
+        if (value === 'Modifier') {
+            document.getElementById(clicked_id).value = 'Valider';
+            document.getElementById(clicked_id).style.backgroundColor = '#1fc36c' /*vert*/
+            document.getElementsByClassName(clicked_id)[0].disabled = false;
+            document.getElementsByClassName(clicked_id)[1].disabled = false;
+            
+        } else {
+            document.editForm.submit();
+        }
+        return false;
+    }
+
+</script>
+
+{% endblock %}

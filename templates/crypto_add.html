@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block body %}
+
+
+<div class="top_ban ligne"> <!--Top menu bar-->
+    <span class="top_title">Ajouter une transaction</span>
+    <span class="paramA">
+        <!--Bouton "graph" Retourner au crypto tracker-->
+        <form action="/" method="get" get class="paramB">
+            <button class="button_transparent"> 
+                <img 
+                    src="./static/pictures/home.PNG" 
+                    alt="Update" height="20">
+            </button>
+        </form>
+
+    </span> 
+</div>
+
+<div class ="margetop centre">
+    <form method="POST">
+        <div><!--crypto currency dropdown list-->
+            <label for="crypto_select"></label>
+            <select
+                class = "symbol_search margin_bottom"
+                name="crypto_id" 
+                id="crypto_select" 
+                required>
+                <option disabled selected>Selectionner une crypto</option>                
+                {% for crypto_id in crypto_currency %}
+                    <option value="{{ crypto_id }}">{{ crypto_id }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div><!--entering the quantity of crypto purchased-->
+            <label for="crypto_qty"></label>
+            <input  
+                class = "symbol_qty margin_bottom"
+                type="number" 
+                step="any"  
+                id="crypto_qty" 
+                name="crypto_qty" 
+                placeholder="Quantité" 
+                required
+
+            > 
+
+        </div>
+        <div><!--entering the price of crypto purchased-->
+            <label for="crypto_purshase_price"></label>
+            <input 
+                class = "symbol_euro"
+                type="number" 
+                step="0.01" 
+                id="crypto_purshase_price" 
+                name="crypto_purshase_price" 
+                placeholder="Prix d'achat" 
+                required size="20"
+
+            >
+        </div>
+        <div><!--submit buton-->
+            <input type="submit" value="AJOUTER" class="button_bigger_g" style="text-align: center;">
+        </div>
+        
+    </form>
+</div>
+
+{% endblock %}

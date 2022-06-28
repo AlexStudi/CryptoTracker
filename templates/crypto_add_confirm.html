@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class="top_ban ligne"> <!--Top menu bar-->
+    <span class="top_title">
+        Transaction enregistrée
+    </span>
+</div>
+
+
+<div class="margetop centre">
+    <div>Votre transaction a été enregitrée avec succès</div>
+    <img src="../static/pictures/validation-check_green.PNG" alt="valide" height="30">
+    <form action="/cryptoadd">
+        <button type="submit" value="OUI" class="button_bigger_g">
+            <img src="../static/pictures/add_black.PNG" alt="Ajouter transaction" height="20px">
+            Ajouter une transaction
+        </button> 
+    </form>
+    <form action="/">
+        <button type="submit" value="NON" class="button_bigger_g">
+            <img src="../static/pictures/home_black.PNG" alt="Retour accueil" height="20px">
+            Accueil
+        </button> 
+    </form>
+</div>
+
+{% endblock %}

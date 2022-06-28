@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class="content top_ban ligne"> <!--Top menu bar-->
+    <span class="top_title">Crypto Historique</span>
+    <span class="paramA">
+        <!--Bouton "graph" Retourner au crypto tracker-->
+        <form action="/" method="get" get class="paramB">
+            <button class="button_transparent"> 
+                <img 
+                    src="./static/pictures/home.PNG" 
+                    alt="Update" height="20">
+            </button>
+        </form>
+        <!--Bouton "+" Ajout d'une transaction-->
+        <form action="/cryptoadd" method="get" get class="paramB">
+            <button class="button_transparent"> 
+                <img 
+                    src="../static/pictures/add.PNG" 
+                    alt="Update" height="20">
+            </button>
+        </form>
+    </span> 
+</div>
+<div class="centre margetop">
+    <p class = "text_1">Valeur portefeuille : {{values.crypto_total_value.sum()}} €</p>
+    <img src="../static/pictures/History.png" alt="Graphique historique portefeuille" width = "95%" >
+    <p class = "text_1">Plus-value : {{values.crypto_total_profit.sum()}} €</p>
+    <img src="../static/pictures/History2.png" alt="Graphique historique profit" width = "95%" >
+</div> 
+{% endblock %}
