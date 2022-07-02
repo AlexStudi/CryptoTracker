@@ -1,4 +1,4 @@
-/*Charte graphique 
+/* Charte graphique 
 Fonts : 
     Titre : Roboto bolt
     Autre : Roboto regular
@@ -7,24 +7,23 @@ Colors :
     #100f0f (noir)
     #efefef (gris clair)
     #1fc36c (vert)
-    #E31E21 (red for tendance)
-$bg-color
-*/
+    #FF9586 (red for tendance)  */
 
 body{
     background-color: #100f0f ;
     font-family: 'Roboto', sans-serif;
-    color: white;
+    color: #efefef;
 }
-
-h1,h2,h3{
-    font-weight : bold;
-    color: #1fc36c;
+h1{
+    font-size: x-large;
+    padding: 10px;
+    text-align: center;
+    display: inline;
 }
 
 /* INPUT */
 input, select{
-    color: #efefef;
+    color : #1fc36c;
     background-color: #0f100f;
     font-size: 1.1em;
     font-weight: bold;
@@ -41,46 +40,29 @@ input, select{
     box-sizing:content-box;
     -webkit-box-sizing:content-box; 
 }
-
 input:disabled{
     color:#efefef;
     background-color:#0f100f;
     border-color: #efefef;
     border-width: 1px;
 }
-
 input:focus{
     background-color: #454545;
     border-color: #1fc36c;
 }
-
 .centre{
     text-align: center;
 }
-
 .margin_bottom{
     margin-bottom: 20px;
-}
-
-.tempo{
-    color : rgb(118, 118, 118);
 }
 
 /* BLOCK */
 .block {
     display: block;
-    
 }
 
 /*Mise en forme diverses*/
-.top_title{
-    color: #efefef ;
-    font-size: x-large;
-    padding: 10px;
-    text-align: center;
-  
-}
-
 .text_1,.text_2, .text_3{
     font-size: 1em;
     text-align: center;
@@ -116,10 +98,10 @@ input:focus{
 }
 
 .margetop{
-    margin:70px 0 0 0;
+    margin:60px 0 0 0;
 }
 
-/*   BOUTON 1  */
+/*BUTTON*/
 .button, .button_r, .button_g, .button_bigger_r, .button_bigger_g {
     background-color: #1fc36c;
     border: none;
@@ -137,16 +119,15 @@ input:focus{
     padding: 13px 10px;
     margin: 25px 0px;
     min-width: 80%;
-
 }
 .button:hover {
     background-color: #1a9a55;
 }
 .button_r, .button_bigger_r {
-    background-color: #db3e33;
+    background-color: #FF9586;
 }
 .button_r:hover, .button_bigger_r:hover {
-    background-color: #e51f14;
+    background-color: #db3e33;
 }
 .button_g, .button_bigger_g {
     background-color: #efefefb0;
@@ -159,18 +140,14 @@ input:focus{
     background-color: #100f0f;
     border: none;
     color: none;
-    text-decoration: none;
-    
+    text-decoration: none;   
 }
-
-/*   BOUTON 2  */
 .Wallet_value {
     background-color: #100f0f;
     border: none;
     color: white;
-    padding: 20px 32px;
+    padding: 10px 20px;
     text-decoration: none;
-    /*display: inline-block;*/
     font-size: 2em;
     margin: 4px 2px;
     cursor: pointer;
@@ -179,36 +156,25 @@ input:focus{
     width: 100%;
 }
 
-/*Tableaux*/
+/*TABLE*/
 table {
     border-collapse: collapse;
     width: 100vw;
 }
-
 table, th, td, .ligne {  
-    padding: 5px;
+    padding: 4px;
 }
-
 .ligne{
-    border-bottom: 1px solid #efefefb0;
+    border-bottom: 0.5px solid #efefef; 
 }
-
-.table_1{
-    font-size: medium;
-    font-weight: bold;
+/*text in TABLE*/
+.text_tab_2{
+    color: grey;
+    font-size: 0.7em;
 }
-.table_2{
-    color: #efefefb0;
-    font-size: 0.8em;
-}
-.table_3{
-    font-size: 0.8em;
-}
-.table_title{
-    text-align: left;
-    color: #1fc36c;
-    font-weight: 100;
-    font-size: 0.8em;
+.text_tab_3{
+    
+    font-size: 0.9em;
 }
 
 /*symbols on left side of the input and select*/
