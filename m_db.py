@@ -301,17 +301,18 @@ def Get_crypto_synthesis(dbconnect):
     cursor = dbconnect.cursor()
     cursor.execute("""
       SELECT
-         actual_datas.logo,
-         actual_datas.actual_value,
-         ROUND(SUM(wallet.purchase_qty),3), 
-         actual_datas.symbol,
-         actual_datas.name,
-         SUM(wallet.purchase_qty)*(actual_datas.actual_value) AS wallet_value,
-         SUM(wallet.purchase_qty)*(actual_datas.actual_value) - SUM(wallet.purchase_price) AS wallet_profit,
-         actual_datas.percent_change_24h,
-         actual_datas.percent_change_7d,
-         actual_datas.tendancy_24h,
-         actual_datas.tendancy_7d
+        actual_datas.id_crypto,
+        actual_datas.logo,
+        actual_datas.actual_value,
+        ROUND(SUM(wallet.purchase_qty),3), 
+        actual_datas.symbol,
+        actual_datas.name,
+        SUM(wallet.purchase_qty)*(actual_datas.actual_value) AS wallet_value,
+        SUM(wallet.purchase_qty)*(actual_datas.actual_value) - SUM(wallet.purchase_price) AS wallet_profit,
+        actual_datas.percent_change_24h,
+        actual_datas.percent_change_7d,
+        actual_datas.tendancy_24h,
+        actual_datas.tendancy_7d
       FROM wallet 
       LEFT JOIN actual_datas
       ON wallet.id_crypto = actual_datas.id_crypto
@@ -322,6 +323,7 @@ def Get_crypto_synthesis(dbconnect):
         
     #with numpy
     wallet = np.array(wallet_value, [
+        ("crypto_id","int_"),
         ("crypto_logo","U250"),
         ("crypto_actual_value","float32"),
         ("crypto_qty","float32"),

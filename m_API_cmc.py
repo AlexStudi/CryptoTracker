@@ -167,7 +167,6 @@ def get_last_cmc(dbconnect, headers, refresh=60):
             }
             response = session.get(url, params=parameters)
             actual_value = (json.loads(response.text)['data'][str(id)]) # get dictionnary for id
-            last_updated = actual_value['last_updated'] #TODO Supprimer cette ligne si pas conversion en heure FR 
             percent_change_24h = actual_value['quote'][str(convert_id)]['percent_change_24h']
             percent_change_7d = actual_value['quote'][str(convert_id)]['percent_change_7d']
             price = actual_value['quote'][str(convert_id)]['price']
