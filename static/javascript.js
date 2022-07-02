@@ -20,14 +20,11 @@ function color_number(tag_name) {
     let elements = document.getElementsByName(tag_name);
     try {
         for (const element of elements){
-            let id = element['id'];
-            let id2 = document.getElementById(id);
-            let attribute_value = id2.getAttribute('value');
-            let test = attribute_value >0; 
+            let test = document.getElementById(element['id']).getAttribute('value') >0; 
             if (test===false) {
-                document.getElementById(id).style.color="#FF9586";/*red color*/
+                document.getElementById(element['id']).style.color="#FF9586";/*red color*/
             } else {
-                document.getElementById(id).style.color="#1fc36c";/*green color*/
+                document.getElementById(element['id']).style.color="#1fc36c";/*green color*/
             }
         }
     } catch {}
@@ -40,11 +37,8 @@ function numStr(tag_name) {
     let elements = document.getElementsByName(tag_name);
     try {
         for (const element of elements){
-            let id = element['id'];
-            let id2 = document.getElementById(id);
-            let number = id2.getAttribute('value');
-            number = new Intl.NumberFormat().format(number);
-            document.getElementById(id).innerHTML = number;
+            format_number = new Intl.NumberFormat().format(document.getElementById(element['id']).getAttribute('value'));
+            document.getElementById(element['id']).innerHTML = format_number;
         }
     } catch {}
  }
