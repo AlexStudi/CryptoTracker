@@ -12,57 +12,46 @@ function modifier(clicked_id) {
     return false;
 }
 
-function color_number(id){
+function color_number(tag_name) {
     // color the text between HTML tag
-    // Arg : id of the tag
+    // Arg : tag name
     // A numeric value is needed in the tag
     // if value >0 the text is green, if not it is red
+    let elements = document.getElementsByName(tag_name);
     try {
-        let id2 = document.getElementById(id);
-        let attribute_value = id2.getAttribute('value');
-        let test = attribute_value >0; 
-        if (test===false) {
-            document.getElementById(id).style.color="#FF9586";/*red color*/
-        } else {
-            document.getElementById(id).style.color="#1fc36c";/*green color*/
+        for (const element of elements){
+            let id = element['id'];
+            let id2 = document.getElementById(id);
+            let attribute_value = id2.getAttribute('value');
+            let test = attribute_value >0; 
+            if (test===false) {
+                document.getElementById(id).style.color="#FF9586";/*red color*/
+            } else {
+                document.getElementById(id).style.color="#1fc36c";/*green color*/
+            }
         }
     } catch {}
-}
+ }
 
-
-function numStr(id) {
+function numStr(tag_name) {
     // replace the text between tag by a value with thousand separator
-    // Arg : id of the tag
+    // Arg : tag name
     // A numeric value is needed in the tag
-    try{
-        let id2 = document.getElementById(id);
-        let number = id2.getAttribute('value');
-        number = new Intl.NumberFormat().format(number);
-        document.getElementById(id).innerHTML = number
-    } catch {}
-}
-
-function get_list_unik_id(tag_name){
-    // return a list of id for the defined name of tag
-    try{
-        let crypo_id_list = document.getElementsByName(tag_name);
-        let crypto_list_unik_id=[];
-        for (const element of crypo_id_list){
-            crypto_list_unik_id.push(element['id']);
+    let elements = document.getElementsByName(tag_name);
+    try {
+        for (const element of elements){
+            let id = element['id'];
+            let id2 = document.getElementById(id);
+            let number = id2.getAttribute('value');
+            number = new Intl.NumberFormat().format(number);
+            document.getElementById(id).innerHTML = number;
         }
-        return crypto_list_unik_id
     } catch {}
-}
+ }
 
-for (const element of get_list_unik_id("crypto_unik_id_colored")){
-    color_number(element);
-    numStr(element);
-}
-
-for (const element of get_list_unik_id("crypto_unik_id")){
-    numStr(element);
-}
-
+ color_number("crypto_unik_id_colored")
+ numStr("crypto_unik_id_colored")
+ numStr("crypto_unik_id")
 
 
 
