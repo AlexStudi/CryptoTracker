@@ -37,7 +37,7 @@ function numStr(tag_name) {
     let elements = document.getElementsByName(tag_name);
     try {
         for (const element of elements){
-            format_number = new Intl.NumberFormat().format(document.getElementById(element['id']).getAttribute('value'));
+            let format_number = new Intl.NumberFormat().format(document.getElementById(element['id']).getAttribute('value'));
             document.getElementById(element['id']).innerHTML = format_number;
         }
     } catch {}
