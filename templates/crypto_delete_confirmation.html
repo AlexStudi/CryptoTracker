@@ -2,10 +2,9 @@
 {% block body %}
 
 <div class = "top_ban ligne"> <!--Top menu bar-->
-    <span class="top_title">Confirmez suppression</span>
-
+    <h1>Confirmez suppression</h1>
 </div>
-<div class="centre">
+<section class="centre">
     {% if transaction_delete %}
         {% for trans in transaction_delete %}
             <form  action="/delete_transaction2/{{trans.crypto_transaction_id}}" method="get" >
@@ -17,7 +16,6 @@
                     <span>{{trans.crypto_qty}} {{trans.crypto_symbol}} </span>
                     <div>({{trans.crypto_name}})</div>
                 </div>
-                
                 <button class="button_bigger_g"> 
                     <img src="../static/pictures/bin_black.PNG" alt="Supprimer" height="20"> 
                     <span> Je confirme la suppression</span> 
@@ -31,6 +29,6 @@
             </form>
         {% endfor %}
     {% endif %}
-</div>
+</section>
 {% endblock %}
 

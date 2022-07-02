@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block body %}
 
-<div class="content top_ban ligne"> <!--Top menu bar-->
-    <span class="top_title">Crypto Historique</span>
+<div class="top_ban ligne"> <!--Top menu bar-->
+    <h1>Crypto Historique</h1>
     <span class="paramA">
         <!--Bouton "graph" Retourner au crypto tracker-->
         <form action="/" method="get" get class="paramB">
@@ -22,10 +22,19 @@
         </form>
     </span> 
 </div>
-<div class="centre margetop">
-    <p class = "text_1">Valeur portefeuille : {{values.crypto_total_value.sum()}} €</p>
-    <img src="../static/pictures/History.png" alt="Graphique historique portefeuille" width = "95%" >
-    <p class = "text_1">Plus-value : {{values.crypto_total_profit.sum()}} €</p>
+<div class="centre margetop text_1">
+    <p>
+        <span>Valeur portefeuille : </span>
+        <span name = "crypto_unik_id" id = "wallet_value" value = "{{values.crypto_total_value.sum()}}">{{values.crypto_total_value.sum()}}</span>
+        <span> €</span>
+    </p>
+    <img src="../static/pictures/History.png" alt = "Graphique historique portefeuille" width = "95%" >
+    <p>
+        <span>Profit : </span>
+        <span name = "crypto_unik_id_colored" id = "wallet_result" value = "{{values.crypto_total_profit.sum()}}">{{values.crypto_total_profit.sum()}}</span>
+        <span> €</span>
+    </p>
     <img src="../static/pictures/History2.png" alt="Graphique historique profit" width = "95%" >
 </div> 
+
 {% endblock %}

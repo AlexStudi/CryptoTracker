@@ -2,7 +2,7 @@
 {% block body %}
 
 <div class="top_ban ligne"> <!--Top menu bar-->
-    <span class="top_title">Crypto Edition</span>
+    <h1>Crypto Edition</h1>
     <span class="paramA">
         <!--Bouton "graph" Retourner au crypto tracker-->
         <form action="/" method="get" get class="paramB">
@@ -23,10 +23,8 @@
     </span> 
 </div>
 
-
 <!--Liste des cryptos en portefeuille-->
 {% if wallet %}
-  <!--TODO revoir le css pour supprimer cette div-->
 <table class ="margetop">
 
     <tbody><!--Contenu tableau-->   
@@ -44,7 +42,7 @@
             name = "editForm"
             method="POST">
                 <tr><!--ligne 2 :-->
-                    <td colspan = "2" class = "table_3">{{entry.crypto_symbol}}</td>
+                    <td colspan = "2" class = "text_tab_3">{{entry.crypto_symbol}}</td>
                     <td>
                         <input 
                         class = "{{entry.crypto_transaction_id}} symbol_qty_small"
@@ -75,7 +73,7 @@
                     </td>
                 </tr>
                 <tr class= "ligne"><!--ligne 3 :-->
-                    <td  colspan = "2" class = "table_3">prix total achat</td>
+                    <td  colspan = "2" class = "text_tab_3">prix total achat</td>
                     <td>
                         <input 
                         class = "{{entry.crypto_transaction_id}} symbol_euro_small"
@@ -108,6 +106,7 @@
 <span class="text_3">Votre portefeuille de crypto est vide</span>
 {% endif %}
 
+
 <script>
     function modifier(clicked_id) {
         value = document.getElementById(clicked_id).value;
@@ -124,5 +123,7 @@
     }
 
 </script>
+
+
 
 {% endblock %}

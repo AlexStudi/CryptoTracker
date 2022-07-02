@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 {% block body %}
 
-
 <div class="top_ban ligne"> <!--Top menu bar-->
-    <span class="top_title">Ajouter une transaction</span>
+    <h1>Ajouter une transaction</h1>
     <span class="paramA">
         <!--Bouton "graph" Retourner au crypto tracker-->
         <form action="/" method="get" get class="paramB">
@@ -13,11 +12,10 @@
                     alt="Update" height="20">
             </button>
         </form>
-
     </span> 
 </div>
 
-<div class ="margetop centre">
+<section class ="margetop centre">
     <form method="POST">
         <div><!--crypto currency dropdown list-->
             <label for="crypto_select"></label>
@@ -40,11 +38,9 @@
                 step="any"  
                 id="crypto_qty" 
                 name="crypto_qty" 
-                placeholder="Quantité" 
+                placeholder="Quantité crypto achetée" 
                 required
-
             > 
-
         </div>
         <div><!--entering the price of crypto purchased-->
             <label for="crypto_purshase_price"></label>
@@ -54,16 +50,14 @@
                 step="0.01" 
                 id="crypto_purshase_price" 
                 name="crypto_purshase_price" 
-                placeholder="Prix d'achat" 
-                required size="20"
-
+                placeholder="Prix total achat euros" 
+                required
             >
         </div>
         <div><!--submit buton-->
             <input type="submit" value="AJOUTER" class="button_bigger_g" style="text-align: center;">
-        </div>
-        
+        </div>   
     </form>
-</div>
+</section>
 
 {% endblock %}
