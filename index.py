@@ -21,8 +21,7 @@ dbconnect = mysql.connector.connect(host=host,user=user,password=password, datab
 cursor = dbconnect.cursor()
 
 # ===================================== connexion API cmc
-#api_key	= os.environ.get('X-CMC_PRO_API_KEY')
-api_key = os.environ.get('X-CMC_PRO_API_KEY')
+api_key = os.environ.get('X-CMC_PRO_API_KEY') 
 headers = {
     'Accepts': 'application/json',
     'X-CMC_PRO_API_KEY': api_key,

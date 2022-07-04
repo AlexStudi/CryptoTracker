@@ -7,3 +7,8 @@ requirementsz.txt
 test.env
 TEST.py
 users.db
+*.bak
+*.mwb
+__pycache__
+envcrypto
+index_sensible_key.py
