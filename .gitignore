@@ -1,9 +1,6 @@
 app.py
 createDBAlchemy.py
 DB_install and tests copy.py
-index_pg copy.py
-requirements env global.txt
-requirementsz.txt
 test.env
 TEST.py
 users.db
@@ -12,3 +9,4 @@ users.db
 __pycache__
 envcrypto
 index_sensible_key.py
+OLD

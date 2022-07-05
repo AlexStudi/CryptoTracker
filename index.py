@@ -1,8 +1,9 @@
+from __future__ import print_function
 from flask import Flask, redirect, render_template, request
+import mysql.connector
+from mysql.connector import errorcode
 from m_API_cmc import *
 from m_db import *
-from boto.s3.connection import S3Connection
-s3 = S3Connection(os.environ['S3_KEY'], os.environ['S3_SECRET'])
 
 crypto_app = Flask(__name__)
 
@@ -12,20 +13,118 @@ def error_message(e):
    return loading_error_message + error_text
 
 # ===================================== connexion mysql
-host = os.environ.get('DB_host')
-user = os.environ.get('DB_user')
-password = os.environ.get('DB_password')
-database = os.environ.get('DB_database')
-dbconnect = mysql.connector.connect(host=host,user=user,password=password, database=database)
+host = os.environ.get('DB_HOST')
+user = os.environ.get('DB_USER')
+password = os.environ.get('DB_PASSWORD')
+database = os.environ.get('DATABASE')
 
+dbconnect = mysql.connector.connect(host=host,user=user,password=password, database=database)
 cursor = dbconnect.cursor()
 
 # ===================================== connexion API cmc
-api_key = os.environ.get('X-CMC_PRO_API_KEY') 
+api_key = os.environ.get('API_KEY') 
+
 headers = {
     'Accepts': 'application/json',
     'X-CMC_PRO_API_KEY': api_key,
     }
+
+# ===================================== Create database
+
+DB_NAME = database
+
+# Tables creation in the database named "DB_NAME"
+# Source : https://dev.mysql.com/doc/connector-python/en/connector-python-example-ddl.html 
+
+TABLES = {}
+
+TABLES['wallet'] = (
+    "CREATE TABLE `wallet` ("
+    "  `id_transaction` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,"
+    "  `id_crypto` INT,"
+    "  `purchase_qty` DECIMAL(30, 15),"
+    "  `purchase_price` DECIMAL(20, 2),"
+    "  `purchase_date` DATETIME"
+    ") ENGINE=InnoDB")
+
+TABLES['crypto_map'] = (
+    "CREATE TABLE `crypto_map` ("
+    "   `id_crypto` INT PRIMARY KEY,"
+    "   `name` VARCHAR(250),"
+    "   `symbol` VARCHAR(50),"
+    "   `rank_crypto` INT,"
+    "   `last_update` DATETIME"
+    ") ENGINE=InnoDB")
+
+TABLES['actual_datas'] = (
+    "CREATE TABLE `actual_datas` ("
+    "   `id_crypto` INT PRIMARY KEY NOT NULL,"
+    "   `actual_value` DECIMAL(20, 2),"
+    "   `logo` VARCHAR(250),"
+    "   `update_date` DATE,"
+    "   `update_date_time` DATETIME,"
+    "   `percent_change_24h` DECIMAL(20, 2),"
+    "   `percent_change_7d` DECIMAL(20, 2),"
+    "   `tendancy_7d` VARCHAR(50),"
+    "   `tendancy_24h` VARCHAR(50),"
+    "   `symbol` VARCHAR(50),"
+    "   `name` VARCHAR(250)"
+    ") ENGINE=InnoDB")
+
+TABLES['history'] = (
+    "CREATE TABLE `history` ("
+    "   `date` DATE PRIMARY KEY,"
+    "   `wallet_value` DECIMAL(20, 2),"
+    "   `profit_loss` DECIMAL(20, 2)"
+    ") ENGINE=InnoDB")
+
+# The preceding code shows how we are storing the CREATE statements in a Python dictionary called TABLES. 
+# We also define the database in a global variable called DB_NAME, which enables you to easily use a different schema.
+
+# A single MySQL server can manage multiple databases. Typically, you specify the database to switch to when connecting to the MySQL server. 
+# This example does not connect to the database upon connection, so that it can make sure the database exists, and create it if not:
+
+def create_database(cursor):
+    try:
+        cursor.execute(
+            "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(DB_NAME))
+    except mysql.connector.Error as err:
+        print("Failed creating database: {}".format(err))
+        exit(1)
+
+try:
+    cursor.execute("USE {}".format(DB_NAME))
+except mysql.connector.Error as err:
+    print("Database {} does not exists.".format(DB_NAME))
+    if err.errno == errorcode.ER_BAD_DB_ERROR:
+        create_database(cursor)
+        print("Database {} created successfully.".format(DB_NAME))
+        dbconnect.database = DB_NAME
+    else:
+        print(err)
+        exit(1)
+
+# We first try to change to a particular database using the database property of the connection object cnx. 
+# If there is an error, we examine the error number to check if the database does not exist. If so, we call the create_database function to create it for us.
+
+# On any other error, the application exits and displays the error message.
+
+# After we successfully create or change to the target database, we create the tables by iterating over the items of the TABLES dictionary:
+
+for table_name in TABLES:
+    table_description = TABLES[table_name]
+    try:
+        print("Creating table {}: ".format(table_name), end='')
+        cursor.execute(table_description)
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+            print("already exists.")
+        else:
+            print(err.msg)
+    else:
+        print("OK")
+
+# ===================================== Create database == END
 
 # ===================================== crypto_tracker 
 @crypto_app.route("/")
