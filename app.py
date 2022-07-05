@@ -3,8 +3,15 @@ import os
 from flask import Flask, redirect, render_template, request
 import mysql.connector
 from mysql.connector import errorcode
-from m_API_cmc import *
-from m_db import *
+from m_API_cmc import get_last_cmc
+from m_API_cmc import get_crypto_list
+from m_db import post_transaction
+from m_db import get_transactions_list
+from m_db import update_transaction
+from m_db import get_datas_delete_transaction
+from m_db import delete_transaction
+from m_db import history_graph
+from m_db import Get_crypto_synthesis
 
 app = Flask(__name__)
 
