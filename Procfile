@@ -1,1 +1,1 @@
-web: gunicorn master:crypto_app
+web: gunicorn index:app

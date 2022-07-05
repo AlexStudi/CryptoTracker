@@ -5,7 +5,7 @@ from mysql.connector import errorcode
 from m_API_cmc import *
 from m_db import *
 
-crypto_app = Flask(__name__)
+app = Flask(__name__)
 
 def error_message(e):
    loading_error_message = """<img src="../static/pictures/broken.PNG" alt="Broken" height="30"><h1>Something is broken.</h1>"""
@@ -127,7 +127,7 @@ for table_name in TABLES:
 # ===================================== Create database == END
 
 # ===================================== crypto_tracker 
-@crypto_app.route("/")
+@app.route("/")
 def list_of_crypto():
    try:
       # Get the last update about crypto 
@@ -143,7 +143,7 @@ def list_of_crypto():
 # get de last list of crypto
 crypto_currency_list = get_crypto_list(headers, dbconnect)
 
-@crypto_app.route("/cryptoadd")
+@app.route("/cryptoadd")
 def cryptoadd():
    try:
       return render_template('crypto_add.html', crypto_currency = crypto_currency_list)
@@ -151,7 +151,7 @@ def cryptoadd():
       error_message(e)
 
 # ===================================== crypto_add - button validate 
-@crypto_app.route("/cryptoadd", methods=['POST'])
+@app.route("/cryptoadd", methods=['POST'])
 def get_data_new_crypto_entry():
    # Get datas from form
    crypto_id = (request.form['crypto_id'])[1:(request.form['crypto_id'].find(","))]
@@ -166,7 +166,7 @@ def get_data_new_crypto_entry():
    return redirect('/cryptoAdd2', code=302)
 
 # ===================================== crypto_add_confirm 
-@crypto_app.route("/cryptoAdd2")
+@app.route("/cryptoAdd2")
 def crypto_add_new_entry():
    try:
       return render_template('crypto_Add_confirm.html')
@@ -174,7 +174,7 @@ def crypto_add_new_entry():
       error_message(e)
 
 # ===================================== crypto_history 
-@crypto_app.route("/crypto_history")
+@app.route("/crypto_history")
 def crypto_history():
    try:
       values = Get_crypto_synthesis(dbconnect)
@@ -185,7 +185,7 @@ def crypto_history():
       error_message(e)
 
 # ===================================== crypto_edit
-@crypto_app.route("/wallet_edit")
+@app.route("/wallet_edit")
 def wallet_edit():
    try:
       wallet = get_transactions_list(dbconnect)
@@ -194,7 +194,7 @@ def wallet_edit():
       error_message(e)
 
 # ===================================== crypto_edit - button delete
-@crypto_app.route('/delete_transaction2/<id>', methods=['DELETE', 'GET'])
+@app.route('/delete_transaction2/<id>', methods=['DELETE', 'GET'])
 def wallet_delete_line2(id):
    try:    
       delete_transaction(dbconnect,id)
@@ -203,7 +203,7 @@ def wallet_delete_line2(id):
       error_message(e)     
 
 # ===================================== crypto_delete_confirmation
-@crypto_app.route('/delete_transaction/<id>', methods=['POST', 'GET'])
+@app.route('/delete_transaction/<id>', methods=['POST', 'GET'])
 def wallet_delete_line(id):
    try:
       transaction_delete = get_datas_delete_transaction(dbconnect,id)
@@ -212,7 +212,7 @@ def wallet_delete_line(id):
       error_message(e)
 
 # ===================================== crypto_edit - button update
-@crypto_app.route("/update_transaction/<id>", methods=['POST'])
+@app.route("/update_transaction/<id>", methods=['POST'])
 def transaction_update(id):
    try:
       qte = request.form['crypto_qty']
@@ -223,4 +223,4 @@ def transaction_update(id):
       error_message(e)
 
 if __name__ == "__main__":
-   crypto_app.run(debug = True)
+   app.run(debug = True)
