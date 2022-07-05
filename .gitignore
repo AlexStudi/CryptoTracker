@@ -1,14 +1,9 @@
-
-createDBAlchemy.py
-DB_install and tests copy.py
-test.env
-TEST.py
-users.db
-*.bak
-*.mwb
 __pycache__
 envcrypto
-index_sensible_key.py
 OLD
+*.bak
+*.mwb
+DB_install and tests.py
 index_sensible_key_heroku_id.py
-cryptostudy
+index_sensible_key.py
+test.env

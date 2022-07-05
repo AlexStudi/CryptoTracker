@@ -1,4 +1,5 @@
 from __future__ import print_function
+import os
 from flask import Flask, redirect, render_template, request
 import mysql.connector
 from mysql.connector import errorcode
