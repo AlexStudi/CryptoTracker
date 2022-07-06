@@ -5,13 +5,14 @@ import mysql.connector
 from mysql.connector import errorcode
 from m_API_cmc import get_last_cmc
 from m_API_cmc import get_crypto_list
+
 from m_db import post_transaction
 from m_db import get_transactions_list
 from m_db import update_transaction
 from m_db import get_datas_delete_transaction
 from m_db import delete_transaction
 from m_db import history_graph
-from m_db import Get_crypto_synthesis
+from m_db import get_crypto_synthesis
 
 app = Flask(__name__)
 
@@ -26,15 +27,19 @@ user = os.environ.get('DB_USER')
 password = os.environ.get('DB_PASSWORD')
 database = os.environ.get('DATABASE')
 
-dbconnect = mysql.connector.connect(host=host,user=user,password=password, database=database)
+dbconnect = mysql.connector.connect(
+   host=host,
+   user=user,
+   password=password, 
+   database=database
+   )
 cursor = dbconnect.cursor()
 
 # ===================================== connexion API cmc
-api_key = os.environ.get('API_KEY')
 
 headers = {
     'Accepts': 'application/json',
-    'X-CMC_PRO_API_KEY': api_key,
+    'X-CMC_PRO_API_KEY': os.environ.get('API_KEY'),
     }
 
 # ===================================== Create database
@@ -136,12 +141,12 @@ for table_name in TABLES:
 
 # ===================================== crypto_tracker 
 @app.route("/")
-def list_of_crypto():
+def cryptotracker():
    try:
       # Get the last update about crypto 
       get_last_cmc(dbconnect,headers,60)      
       # Get the detail by crypto
-      wallet_detailled = Get_crypto_synthesis(dbconnect)
+      wallet_detailled = get_crypto_synthesis(dbconnect)
       # Get the total wallet value
       return render_template('crypto_tracker.html',wallet_detailled=wallet_detailled)
    except Exception as e:
@@ -171,7 +176,7 @@ def get_data_new_crypto_entry():
    #Update actual value
    get_last_cmc(dbconnect,headers,180)
    # Update actual value and history
-   Get_crypto_synthesis(dbconnect)
+   get_crypto_synthesis(dbconnect)
    return redirect('/cryptoAdd2', code=302)
 
 # ===================================== crypto_add_confirm 
@@ -186,8 +191,8 @@ def crypto_add_new_entry():
 @app.route("/crypto_history")
 def crypto_history():
    try:
-      values = Get_crypto_synthesis(dbconnect)
-      Get_crypto_synthesis(dbconnect)
+      values = get_crypto_synthesis(dbconnect)
+      #get_crypto_synthesis(dbconnect)
       history_graph("./static/pictures/History.png","./static/pictures/History2.png",dbconnect)
       return render_template('crypto_history.html', values=values)
    except Exception as e:

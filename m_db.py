@@ -260,7 +260,7 @@ def history_graph(path, path2, dbconnect):
    # Path of the history graph
    plt.savefig(path2, transparent=True) 
 
-def Get_crypto_synthesis(dbconnect):
+def get_crypto_synthesis(dbconnect):
     """
     Get the last wallet total value & total profits 
     Save these values in the history table
@@ -340,7 +340,6 @@ def Get_crypto_synthesis(dbconnect):
     #if the wallet is empty, there is nothing to update in the history
     if len(wallet)==0: 
         wallet = []
-        pass
     else:   
         now = (dt.datetime.now()).strftime("%Y-%m-%d")
         datas = [now]

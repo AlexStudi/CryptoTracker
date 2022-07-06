@@ -2,16 +2,14 @@
 # Web site : https://coinmarketcap.com/api/
 
 import json
-#from symtable import Symbol
 import mysql.connector
 from requests import Session
 import json
 from datetime import datetime #, timedelta
 import numpy as np
-#from zoneinfo import ZoneInfo
 from operator import itemgetter
 
-def get_crypto_list_OLD(headers, dbconnect, limit=100, refresh=180):
+def get_crypto_list_old(headers, dbconnect, limit=100, refresh=180):
     """
     TODO : Terminer la notice de cette fonction : Arg, etc...
     Get list of the crypto from the API CoinMarketCap
@@ -57,8 +55,7 @@ def get_crypto_list_OLD(headers, dbconnect, limit=100, refresh=180):
         update = False
         print("Update of the crypto_map not needed") #TODO delete after dev
     else:
-        update = True
-        print("Update of the crypto_map needed") #TODO delete after dev
+        print('check')
 
     if update == True: # if an update is needed, truncate the table crypto_map and save the last list from the API
         session = Session()
@@ -123,10 +120,10 @@ def get_last_cmc(dbconnect, headers, refresh=60):
 
     # Step 2 : Add crypto id if not exist in the table actual_datas
     for id in crypto_purchased:
-        id=[id]
+        id2=[id]
         cursor.execute("""
             INSERT IGNORE INTO actual_datas (id_crypto) VALUES(%s);
-            """, id)
+            """, id2)
         dbconnect.commit()
 
     # Step 3 : get the last update datetime for each crypto_id in the actual_datas table
@@ -221,8 +218,6 @@ def get_last_cmc(dbconnect, headers, refresh=60):
             print("id_",id," updated")
         else:
             print("id_",id," update not needed")
-
-
 
 def get_crypto_list(headers, limit=100):
     
