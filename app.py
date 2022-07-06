@@ -148,12 +148,13 @@ def list_of_crypto():
       error_message(e)
 
 # ===================================== crypto_add > /cryptoadd
-# get de last list of crypto
-crypto_currency_list = get_crypto_list(headers, dbconnect)
+
 
 @app.route("/cryptoadd")
 def cryptoadd():
    try:
+      # get de last list of crypto
+      crypto_currency_list = get_crypto_list(headers, 200)
       return render_template('crypto_add.html', crypto_currency = crypto_currency_list)
    except Exception as e:
       error_message(e)

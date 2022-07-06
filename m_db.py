@@ -339,6 +339,7 @@ def Get_crypto_synthesis(dbconnect):
 
     #if the wallet is empty, there is nothing to update in the history
     if len(wallet)==0: 
+        wallet = []
         pass
     else:   
         now = (dt.datetime.now()).strftime("%Y-%m-%d")

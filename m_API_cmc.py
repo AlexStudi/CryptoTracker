@@ -2,15 +2,16 @@
 # Web site : https://coinmarketcap.com/api/
 
 import json
-from symtable import Symbol
+#from symtable import Symbol
 import mysql.connector
 from requests import Session
 import json
-from datetime import datetime, timedelta
+from datetime import datetime #, timedelta
 import numpy as np
-from zoneinfo import ZoneInfo
+#from zoneinfo import ZoneInfo
+from operator import itemgetter
 
-def get_crypto_list(headers, dbconnect, limit=100, refresh=180):
+def get_crypto_list_OLD(headers, dbconnect, limit=100, refresh=180):
     """
     TODO : Terminer la notice de cette fonction : Arg, etc...
     Get list of the crypto from the API CoinMarketCap
@@ -220,3 +221,28 @@ def get_last_cmc(dbconnect, headers, refresh=60):
             print("id_",id," updated")
         else:
             print("id_",id," update not needed")
+
+
+
+def get_crypto_list(headers, limit=100):
+    
+    #API parameters
+    url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/map'
+    parameters = {
+        
+        'aux':"", #when empty remove : "platform,first_historical_data,last_historical_data,is_active" 
+        'sort':"cmc_rank", #sort by rank (id by default)
+        'limit':str(limit)
+    }
+    session = Session()
+    session.headers.update(headers)
+    response = session.get(url, params=parameters)
+    crypto_list_source = json.loads(response.text)['data'] 
+    crypto_list = []
+    for i in range(len(crypto_list_source)):
+        id_crypto = crypto_list_source[i]["id"]
+        name = crypto_list_source[i]["name"]
+        symbol = crypto_list_source[i]["symbol"]
+        crypto_list.append([id_crypto, symbol, name])
+    crypto_list = sorted(crypto_list, key=itemgetter(2))
+    return crypto_list

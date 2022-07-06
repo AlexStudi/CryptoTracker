@@ -187,7 +187,7 @@ table, th, td, .ligne {
     background-position-x: 10px;
 }
 .symbol_euro, .symbol_euro_small {
-    background-image:url(./static/pictures/euro.PNG);
+    background-image:url(./pictures/euro.PNG);
 }
 .symbol_qty, .symbol_qty_small {
     background-image:url(./pictures/coins.PNG);

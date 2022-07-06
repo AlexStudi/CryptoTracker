@@ -7,3 +7,6 @@ DB_install and tests.py
 index_sensible_key_heroku_id.py
 index_sensible_key.py
 test.env
+
+test_get_list.py
+crypto_list_new.py
