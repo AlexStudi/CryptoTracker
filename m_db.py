@@ -1,4 +1,5 @@
 """Get datas from the data base"""
+from calendar import c
 from requests import Session
 import numpy as np
 import matplotlib.pyplot as plt
@@ -25,6 +26,7 @@ def post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purchase_price, cr
     cursor = dbconnect.cursor()
     cursor.execute("""INSERT INTO wallet (id_crypto, purchase_qty, purchase_price, purchase_date) VALUES(%s,%s,%s,%s)""",datas)
     dbconnect.commit()
+    cursor.close()
 
 def get_transactions_list(dbconnect):
     """Get the détail of the transaction saved in the database
@@ -108,6 +110,8 @@ def update_transaction(dbconnect, id, qte, total_price):
     WHERE id_transaction = %s;
     """, datas)
     dbconnect.commit()
+    cursor.close()
+    return "Transaction updated"
 
 def get_datas_delete_transaction(dbconnect, id):
     """Get the informations about the transaction that need to be delete
@@ -179,6 +183,7 @@ def delete_transaction(dbconnect, id):
         DELETE FROM wallet WHERE id_transaction = %s;
     """,datas)
     dbconnect.commit()
+    cursor.close()
     return id
 
 def history_graph(path, path2, dbconnect):
@@ -350,6 +355,7 @@ def get_crypto_synthesis(dbconnect):
         """, datas)
         dbconnect.commit()
         
+
         #Step 3 : Update the history
         datas = [int(wallet.crypto_total_value.sum()), int(wallet.crypto_total_profit.sum()), now]
         cursor.execute("""
@@ -360,5 +366,6 @@ def get_crypto_synthesis(dbconnect):
             WHERE date = %s
         """,datas)
         dbconnect.commit()
+        cursor.close()
 
     return wallet
