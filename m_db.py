@@ -268,7 +268,7 @@ def history_graph(path, path2, dbconnect):
       label.set(rotation=0, horizontalalignment='center')
    # Path of the history graph
    plt.savefig(path2, transparent=True) 
-   return "ok"
+   
 
 def get_crypto_synthesis(dbconnect):
     """
