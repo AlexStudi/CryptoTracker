@@ -14,7 +14,7 @@ def get_last_cmc(dbconnect, headers, refresh=60):
     # The list of crypto 
     cursor = dbconnect.cursor()
     cursor.execute("""
-        SELECT 
+        SELECT DISTINCT
             actual_datas.id_crypto
         FROM actual_datas
         JOIN wallet
