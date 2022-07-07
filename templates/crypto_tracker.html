@@ -38,7 +38,7 @@
     ('tendancy_7d', '<U250')]"-->
 <!--Wallet total value-->
 <section class="centre margetop">
-    {% if wallet_detailled.crypto_qty %}
+    {% if wallet_detailled.crypto_qty[0] %}
         
         <form action="/crypto_history"><!--Button total value (on click : go to history)-->
             <button type="submit" class = "Wallet_value">
