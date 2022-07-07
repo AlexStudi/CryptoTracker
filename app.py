@@ -40,12 +40,10 @@ cursor = dbconnect.cursor()
 
 headers = {
     'Accepts': 'application/json',
-    'X-CMC_PRO_API_KEY': os.environ.get('API_KEY'),
+    'X-CMC_PRO_API_KEY': os.environ.get('API_KEY_TWO'),
     }
 
 # ===================================== Create database
-
-DB_NAME = database
 
 # Tables creation in the database named "DB_NAME"
 # Source : https://dev.mysql.com/doc/connector-python/en/connector-python-example-ddl.html 
@@ -94,7 +92,7 @@ TABLES['history'] = (
 
 # The preceding code shows how we are storing the CREATE statements in a Python dictionary called TABLES. 
 # We also define the database in a global variable called DB_NAME, which enables you to easily use a different schema.
-
+DB_NAME = database
 # A single MySQL server can manage multiple databases. Typically, you specify the database to switch to when connecting to the MySQL server. 
 # This example does not connect to the database upon connection, so that it can make sure the database exists, and create it if not:
 
@@ -117,11 +115,6 @@ except mysql.connector.Error as err:
     else:
         print(err)
         exit(1)
-
-# We first try to change to a particular database using the database property of the connection object cnx. 
-# If there is an error, we examine the error number to check if the database does not exist. If so, we call the create_database function to create it for us.
-
-# On any other error, the application exits and displays the error message.
 
 # After we successfully create or change to the target database, we create the tables by iterating over the items of the TABLES dictionary:
 
@@ -148,19 +141,16 @@ def cryptotracker():
       get_last_cmc(dbconnect,headers,90)    #TODO update the time to 15  
       # Get the detail by crypto
       wallet_detailled = get_crypto_synthesis(dbconnect)
-      # Get the total wallet value
       return render_template('crypto_tracker.html',wallet_detailled=wallet_detailled)
    except Exception as e:
       error_message(e)
 
 # ===================================== crypto_add > /cryptoadd
-
-
 @app.route("/cryptoadd")
 def cryptoadd():
    try:
       # get de last list of crypto
-      crypto_currency_list = get_crypto_list(headers, 200)
+      crypto_currency_list = get_crypto_list(headers, 200) #TODO update quantity if more currency needed
       return render_template('crypto_add.html', crypto_currency = crypto_currency_list)
    except Exception as e:
       error_message(e)
@@ -172,11 +162,10 @@ def get_data_new_crypto_entry():
    crypto_id = (request.form['crypto_id'])[1:(request.form['crypto_id'].find(","))]
    crypto_qty = request.form['crypto_qty']
    crypto_purshase_price = request.form['crypto_purshase_price']
-   # Save the transaction in the table wallet
+   # Save the transaction
    post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purshase_price)
-   #Update actual value
+   # Update actual value
    get_last_cmc(dbconnect,headers,90) #TODO update the time to 15  
-   # Update actual value and history
    get_crypto_synthesis(dbconnect)
    return redirect('/cryptoAdd2')
 
@@ -184,6 +173,7 @@ def get_data_new_crypto_entry():
 @app.route("/cryptoAdd2")
 def crypto_add_new_entry():
    try:
+      # Message to confirm the transaction is recorded in the database
       return render_template('crypto_Add_confirm.html')
    except Exception as e:
       error_message(e)
@@ -193,7 +183,6 @@ def crypto_add_new_entry():
 def crypto_history():
    try:
       values = get_crypto_synthesis(dbconnect)
-      #get_crypto_synthesis(dbconnect)
       history_graph("./static/pictures/History.png","./static/pictures/History2.png",dbconnect)
       return render_template('crypto_history.html', values=values)
    except Exception as e:
