@@ -165,8 +165,8 @@ def get_data_new_crypto_entry():
    # Save the transaction
    post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purshase_price)
    # Update actual value
-   get_last_cmc(dbconnect,headers,90) #TODO update the time to 15  
-   get_crypto_synthesis(dbconnect)
+   #get_last_cmc(dbconnect,headers,90) #TODO update the time to 15  
+   #get_crypto_synthesis(dbconnect)
    return redirect('/cryptoAdd2')
 
 # ===================================== crypto_add_confirm 
