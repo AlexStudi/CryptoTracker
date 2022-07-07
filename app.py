@@ -37,6 +37,7 @@ cursor = dbconnect.cursor()
 
 # ===================================== connexion API cmc
 
+
 headers = {
     'Accepts': 'application/json',
     'X-CMC_PRO_API_KEY': os.environ.get('API_KEY'),
@@ -165,7 +166,7 @@ def cryptoadd():
       error_message(e)
 
 # ===================================== crypto_add - button validate 
-@app.route("/cryptoadd", methods=['POST'])
+@app.route("/cryptoadd", methods=['POST','GET'])
 def get_data_new_crypto_entry():
    # Get datas from form
    crypto_id = (request.form['crypto_id'])[1:(request.form['crypto_id'].find(","))]
