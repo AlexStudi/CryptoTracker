@@ -323,7 +323,7 @@ def get_crypto_synthesis(dbconnect):
         actual_datas.tendancy_24h,
         actual_datas.tendancy_7d
       FROM wallet 
-      JOIN actual_datas
+      LEFT JOIN actual_datas
       ON wallet.id_crypto = actual_datas.id_crypto
       GROUP BY wallet.id_crypto
       ORDER BY wallet.id_crypto

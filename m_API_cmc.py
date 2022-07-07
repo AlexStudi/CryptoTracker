@@ -19,7 +19,7 @@ def get_last_cmc(dbconnect, headers, refresh=60):
         FROM actual_datas
         JOIN wallet
         ON wallet.id_crypto = actual_datas.id_crypto
-        WHERE TIMESTAMPDIFF(MINUTE, update_date_time, UTC_TIMESTAMP()) > %s
+        WHERE TIMESTAMPDIFF(MINUTE, update_date_time, UTC_TIMESTAMP()) > %s OR update_date_time IS NULL
     """, refresh)
     get_update_datetime_by_id = cursor.fetchall()
     cursor.close()
