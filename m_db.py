@@ -26,6 +26,8 @@ def post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purchase_price, cr
     cursor = dbconnect.cursor()
     cursor.execute("""INSERT INTO wallet (id_crypto, purchase_qty, purchase_price, purchase_date) VALUES(%s,%s,%s,%s)""",datas)
     dbconnect.commit()
+    datas =  [crypto_id]
+    cursor.execute("""INSERT IGNORE INTO actual_datas (id_crypto) VALUES(%s);""", datas) #BUG added here removed from get last cmc
     cursor.close()
 
 def get_transactions_list(dbconnect):
@@ -303,6 +305,8 @@ def get_crypto_synthesis(dbconnect):
     
     # Step 1 : Value and profit calculation
     #TODO supprimer la source crypto_map car BUG 
+
+
     cursor = dbconnect.cursor()
     cursor.execute("""
       SELECT
@@ -319,7 +323,7 @@ def get_crypto_synthesis(dbconnect):
         actual_datas.tendancy_24h,
         actual_datas.tendancy_7d
       FROM wallet 
-      LEFT JOIN actual_datas
+      JOIN actual_datas
       ON wallet.id_crypto = actual_datas.id_crypto
       GROUP BY wallet.id_crypto
       ORDER BY wallet.id_crypto

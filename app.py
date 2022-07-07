@@ -144,7 +144,7 @@ for table_name in TABLES:
 def cryptotracker():
    try:
       # Get the last update about crypto 
-      get_last_cmc(dbconnect,headers,60)      
+      get_last_cmc(dbconnect,headers,15)      
       # Get the detail by crypto
       wallet_detailled = get_crypto_synthesis(dbconnect)
       # Get the total wallet value
@@ -174,7 +174,7 @@ def get_data_new_crypto_entry():
    # Save the transaction in the table wallet
    post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purshase_price)
    #Update actual value
-   get_last_cmc(dbconnect,headers,180)
+   get_last_cmc(dbconnect,headers,15)
    # Update actual value and history
    get_crypto_synthesis(dbconnect)
    return redirect('/cryptoAdd2', code=302)
