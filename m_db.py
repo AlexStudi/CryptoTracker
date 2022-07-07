@@ -29,6 +29,7 @@ def post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purchase_price, cr
     datas =  [crypto_id]
     cursor.execute("""INSERT IGNORE INTO actual_datas (id_crypto) VALUES(%s);""", datas) #BUG added here removed from get last cmc
     cursor.close()
+    return "ok"
 
 def get_transactions_list(dbconnect):
     """Get the détail of the transaction saved in the database
@@ -197,6 +198,7 @@ def history_graph(path, path2, dbconnect):
          cursor : cursor parameters to access to the database"""
 
    cursor = dbconnect.cursor()
+   
 
    # ============================= DATA EXTRACT FROM DB =============================
    cursor.execute("""
@@ -266,6 +268,7 @@ def history_graph(path, path2, dbconnect):
       label.set(rotation=0, horizontalalignment='center')
    # Path of the history graph
    plt.savefig(path2, transparent=True) 
+   return "ok"
 
 def get_crypto_synthesis(dbconnect):
     """

@@ -88,6 +88,7 @@ def get_last_cmc(dbconnect, headers, refresh=60):
         dbconnect.commit()
         cursor.close()
         print("id_",i[0]," updated")
+    return "Update done"
 
 def get_crypto_list(headers, limit=100):
     
