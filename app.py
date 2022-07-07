@@ -166,7 +166,7 @@ def cryptoadd():
       error_message(e)
 
 # ===================================== crypto_add - button validate 
-@app.route("/cryptoadd", methods=['POST','GET'])
+@app.route("/cryptoadd", methods=['POST'])
 def get_data_new_crypto_entry():
    # Get datas from form
    crypto_id = (request.form['crypto_id'])[1:(request.form['crypto_id'].find(","))]
@@ -178,7 +178,7 @@ def get_data_new_crypto_entry():
    get_last_cmc(dbconnect,headers,15)
    # Update actual value and history
    get_crypto_synthesis(dbconnect)
-   return redirect('/cryptoAdd2', code=302)
+   return redirect('/cryptoAdd2')
 
 # ===================================== crypto_add_confirm 
 @app.route("/cryptoAdd2")
