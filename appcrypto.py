@@ -167,7 +167,8 @@ def get_data_new_crypto_entry():
    # Update actual value
    get_last_cmc(dbconnect,headers,90) #TODO update the time to 15  
    get_crypto_synthesis(dbconnect)
-   return redirect('/cryptoAdd2')
+   #return redirect('/cryptoAdd2')
+   return render_template('crypto_Add_confirm.html')
 
 # ===================================== crypto_add_confirm 
 @app.route("/cryptoAdd2")
