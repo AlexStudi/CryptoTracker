@@ -326,7 +326,7 @@ def get_crypto_synthesis(dbconnect):
       LEFT JOIN actual_datas
       ON wallet.id_crypto = actual_datas.id_crypto
       GROUP BY wallet.id_crypto
-      ORDER BY wallet.id_crypto
+      ORDER BY wallet.id_crypto;
       """)
     wallet_value = cursor.fetchall()
         
