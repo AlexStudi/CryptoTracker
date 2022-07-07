@@ -1,13 +1,13 @@
 """Get datas from the data base"""
-from calendar import c
-from requests import Session
+#from requests import Session
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-import mysql.connector
+from mysql.connector import errorcode
 from datetime import datetime
 import datetime as dt
-def post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purchase_price, crypto_purchase_date=(datetime.now()).strftime("%Y-%m-%d")):
+
+def post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purchase_price):#, crypto_purchase_date=(datetime.now()).strftime("%Y-%m-%d")):
     """Save a transaction in the data base
     
     Args:
@@ -21,16 +21,16 @@ def post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purchase_price, cr
         
         post_transaction("1", "2", "10000", "2022-02-01")
     """
-    datas = (crypto_id, crypto_qty, crypto_purchase_price, crypto_purchase_date)
+    datas = (crypto_id, crypto_qty, crypto_purchase_price) #, crypto_purchase_date)
     #Save the transaction in the table wallet
     cursor = dbconnect.cursor()
-    cursor.execute("""INSERT INTO wallet (id_crypto, purchase_qty, purchase_price, purchase_date) VALUES(%s,%s,%s,%s)""",datas)
+    cursor.execute("""INSERT INTO wallet (id_crypto, purchase_qty, purchase_price, purchase_date) VALUES(%s,%s,%s,UTC_TIMESTAMP())""",datas)
     dbconnect.commit()
     datas =  [crypto_id]
     cursor.execute("""INSERT IGNORE INTO actual_datas (id_crypto) VALUES(%s);""", datas) #BUG added here removed from get last cmc
+    dbconnect.commit()
     cursor.close()
-    return "ok"
-
+    
 def get_transactions_list(dbconnect):
     """Get the détail of the transaction saved in the database
     
@@ -114,9 +114,8 @@ def update_transaction(dbconnect, id, qte, total_price):
     """, datas)
     dbconnect.commit()
     cursor.close()
-    return "Transaction updated"
-
-def get_datas_delete_transaction(dbconnect, id):
+    
+def get_datas_delete_transaction(cursor, id):
     """Get the informations about the transaction that need to be delete
     in order to make a confirmation form.
 
@@ -136,7 +135,6 @@ def get_datas_delete_transaction(dbconnect, id):
         'crypto_plus_value'
     """
     datas = [id]
-    cursor = dbconnect.cursor()
     cursor.execute("""
     SELECT
         actual_datas.logo,
@@ -180,8 +178,8 @@ def delete_transaction(dbconnect, id):
     Return :
         none    
     """
-    cursor = dbconnect.cursor()
     datas = [id]
+    cursor = dbconnect.cursor()
     cursor.execute("""
         DELETE FROM wallet WHERE id_transaction = %s;
     """,datas)
@@ -269,7 +267,6 @@ def history_graph(path, path2, dbconnect):
    # Path of the history graph
    plt.savefig(path2, transparent=True) 
    
-
 def get_crypto_synthesis(dbconnect):
     """
     Get the last wallet total value & total profits 
@@ -353,26 +350,28 @@ def get_crypto_synthesis(dbconnect):
     if len(wallet)==0: 
         wallet = []
     else:   
-        now = (dt.datetime.now()).strftime("%Y-%m-%d")
-        datas = [now]
+        #now = (dt.datetime.now()).strftime("%Y-%m-%d")
+        #datas = [now]
 
         #Step 2 : Add the actual date in the history if it doesn't exist
         cursor.execute("""
-            INSERT IGNORE INTO history (date) VALUES(%s)
-        """, datas)
+            INSERT IGNORE INTO history (date) VALUES(UTC_DATE())
+        """)
         dbconnect.commit()
+        #cursor.close()#BUG
         
 
         #Step 3 : Update the history
-        datas = [int(wallet.crypto_total_value.sum()), int(wallet.crypto_total_profit.sum()), now]
+        
+        datas = [int(wallet.crypto_total_value.sum()), int(wallet.crypto_total_profit.sum())]#, now]
+        #cursor = dbconnect.cursor()#BUG
         cursor.execute("""
             UPDATE history
             SET 
                 wallet_value = %s,
                 profit_loss = %s
-            WHERE date = %s
+            WHERE date = UTC_DATE()
         """,datas)
         dbconnect.commit()
-        cursor.close()
-
+        cursor.close()#BUG
     return wallet

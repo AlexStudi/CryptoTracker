@@ -189,32 +189,32 @@ def fc_test(test_id, test, test_desc_if_true, test_desc_if_false):
 
 
 
-title_test("Get_crypto_synthesis()")
+title_test("get_crypto_synthesis()")
 
-wallet = Get_crypto_synthesis(cnx)
-
+wallet = get_crypto_synthesis(cnx)
+pprint(wallet)
 test_id = 1.1
-test = wallet[0][5] == 400000
+test = wallet[0][6] == 400000
 test_desc_if_true = "In our DB we bought 10BTC for 500000, now a 1BTC = 40000, the actual wallet_value = 10x40000 = 400000 euros"
-test_desc_if_false = f"The total wallet value should be 400000, and it is {wallet[0][5]}"
+test_desc_if_false = f"The total wallet value should be 400000, and it is {wallet[0][6]}"
 fc_test(test_id, test, test_desc_if_true, test_desc_if_false)
 
 test_id = 1.2
-test = wallet[0][6] == -100000
+test = wallet[0][7] == -100000
 test_desc_if_true = "In our DB we bought 10BTC for 500000, now a 1BTC = 40000, the actual wallet_profit = 10x40000 - 500000 = -100000 euros"
-test_desc_if_false = f"The total wallet profit should be -100000, and it  {wallet[0][6]}"
+test_desc_if_false = f"The total wallet profit should be -100000, and it  {wallet[0][7]}"
 fc_test(test_id, test, test_desc_if_true, test_desc_if_false)
 
 test_id = 1.3
-test = wallet[1][5] == 60000
+test = wallet[1][6] == 60000
 test_desc_if_true = "In our DB we bought 20ETH for 20000, now a 1ETH = 3000, the actual wallet_value = 20x3000 = 60000 euros"
-test_desc_if_false = f"The total wallet value should be 60000, and it is  {wallet[1][5]}"
+test_desc_if_false = f"The total wallet value should be 60000, and it is  {wallet[1][6]}"
 fc_test(test_id, test, test_desc_if_true, test_desc_if_false)
 
 test_id = 1.4
-test = wallet[1][6] == 40000
+test = wallet[1][7] == 40000
 test_desc_if_true = "In our DB we bought 20ETH for 20000, now a 1ETH = 3000, the actual wallet_profit = 20x3000 - 20000 = 40000 euros"
-test_desc_if_false = f"The total wallet profit should be 40000, and it is  {wallet[1][6]}"
+test_desc_if_false = f"The total wallet profit should be 40000, and it is  {wallet[1][7]}"
 fc_test(test_id, test, test_desc_if_true, test_desc_if_false)
 
 # Check if the function record well the history in the DB
@@ -246,7 +246,7 @@ title_test("post_transaction()")
 crypto_id = 1
 crypto_qty = 2
 crypto_purchase_price = 35000
-#crypto_purchase_date = "2022-06-12"
+
 post_transaction(cnx, crypto_id, crypto_qty, crypto_purchase_price)
 cursor.execute("""SELECT * FROM wallet WHERE id_transaction = @@identity""")
 last_transaction = cursor.fetchall()

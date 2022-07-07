@@ -10,11 +10,17 @@ test.env
 
 test_get_list.py
 crypto_list_new.py
-app copy.py
+app_copy.py
 
-TEST.py
-TEST2 better.py
-m_API_cmc copy.py
-test2.py
-testfunction.py
+access.txt
 get_credit.py
+
+
+
+
+app_copy copy.py
+
+static/pictures/History.png
+static/pictures/History2.png
+
+test.py

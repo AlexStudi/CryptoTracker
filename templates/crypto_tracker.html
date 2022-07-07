@@ -40,6 +40,7 @@
         </form>
         
         <table><!--Table list of purchased crypto with details-->
+            <caption>Récapitulatif portefeuille de crypto monnaie</caption>
             <thead class = "ligne text_tab_2"><!--Column titles-->
                 <tr>
                     <th></th>
@@ -91,9 +92,9 @@
             </tbody>
         </table>
 
-        {% else %}
-            <h1>Votre portefeuille de crypto est vide</h1> <!--Message if no crypto in the wallet-->
-            <img src="../static/pictures/chat_bubble.PNG" alt="Message information" height="50">
+    {% else %}
+        <h1>Votre portefeuille de crypto est vide</h1> <!--Message if no crypto in the wallet-->
+        <img src="../static/pictures/chat_bubble.PNG" alt="Message information" height="50">
     {% endif %}
 </section>
 
