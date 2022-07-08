@@ -171,13 +171,13 @@ def get_data_new_crypto_entry():
    return render_template('crypto_Add_confirm.html')
 
 # ===================================== crypto_add_confirm 
-@app.route("/cryptoAdd2")
-def crypto_add_new_entry():
-   try:
-      # Message to confirm the transaction is recorded in the database
-      return render_template('crypto_Add_confirm.html')
-   except Exception as e:
-      error_message(e)
+#@app.route("/cryptoAdd2")
+#def crypto_add_new_entry():
+#   try:
+#      # Message to confirm the transaction is recorded in the database
+#      return render_template('crypto_Add_confirm.html')
+#   except Exception as e:
+#      error_message(e)
 
 # ===================================== crypto_history 
 @app.route("/crypto_history")
