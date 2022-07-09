@@ -81,6 +81,7 @@ def get_transactions_list(dbconnect):
     for i in wallet_value:
         if len(i) == len(tuple_title): 
             wallet.append(dict(zip(tuple_title,i)))
+    cursor.close() #BUG added 22/07/09
     return wallet
 
 def update_transaction(dbconnect, id, qte, total_price):
@@ -166,6 +167,7 @@ def get_datas_delete_transaction(cursor, id):
     for i in transaction:
         if len(i) == len(tuple_title): 
             transaction_delete.append(dict(zip(tuple_title,i)))
+    cursor.close() #BUG added 22/07/09
     return transaction_delete
 
 def delete_transaction(dbconnect, id):
@@ -267,6 +269,7 @@ def history_graph(path, path2, dbconnect):
       label.set(rotation=0, horizontalalignment='center')
    # Path of the history graph
    plt.savefig(path2, transparent=True) 
+   cursor.close() #BUG added 22/07/09
    
 def get_crypto_synthesis(dbconnect):
     """
