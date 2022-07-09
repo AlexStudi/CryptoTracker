@@ -228,4 +228,4 @@ def transaction_update(id):
       error_message(e)
 
 if __name__ == "__main__":
-   app.run(debug = True)
+   app.run()
