@@ -373,5 +373,5 @@ def get_crypto_synthesis(dbconnect):
             WHERE date = UTC_DATE()
         """,datas)
         dbconnect.commit()
-        cursor.close()#BUG
+        #cursor.close()#BUG remove 2022 07 09
     return wallet
