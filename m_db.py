@@ -29,6 +29,7 @@ def post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purchase_price):#,
     datas =  [crypto_id]
     cursor.execute("""INSERT IGNORE INTO actual_datas (id_crypto) VALUES(%s);""", datas) #BUG added here removed from get last cmc
     dbconnect.commit()
+    cursor.close()
     
     
 def get_transactions_list(dbconnect):
@@ -373,5 +374,5 @@ def get_crypto_synthesis(dbconnect):
             WHERE date = UTC_DATE()
         """,datas)
         dbconnect.commit()
-        #cursor.close()#BUG remove 2022 07 09
+    cursor.close()#BUG remove 2022 07 09
     return wallet
