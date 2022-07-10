@@ -14,7 +14,7 @@ from m_db import delete_transaction
 from m_db import history_graph
 from m_db import get_crypto_synthesis
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 def error_message(e):
    loading_error_message = """<img src="../static/pictures/broken.PNG" alt="Broken" height="30"><h1>Something is broken.</h1>"""
@@ -133,12 +133,16 @@ for table_name in TABLES:
 
 # ===================================== Create database == END
 
+# Parameters
+refresh_in_minutes = 15 #refresh time for function get_last_cmc()
+lengh_crypto_list = 200
+
 # ===================================== crypto_tracker 
 @app.route("/")
 def cryptotracker():
    try:
       # Get the last update about crypto 
-      get_last_cmc(dbconnect,headers,90)    #TODO update the time to 15  
+      get_last_cmc(dbconnect,headers,refresh_in_minutes)    #TODO update the time to 15  
       # Get the detail by crypto
       wallet_detailled = get_crypto_synthesis(dbconnect)
       return render_template('crypto_tracker.html',wallet_detailled=wallet_detailled)
@@ -150,7 +154,7 @@ def cryptotracker():
 def cryptoadd():
    try:
       # get de last list of crypto
-      crypto_currency_list = get_crypto_list(headers, 200) #TODO update quantity if more currency needed
+      crypto_currency_list = get_crypto_list(headers, lengh_crypto_list) #TODO update quantity if more currency needed
       return render_template('crypto_add.html', crypto_currency = crypto_currency_list)
    except Exception as e:
       error_message(e)
@@ -165,7 +169,7 @@ def get_data_new_crypto_entry():
    # Save the transaction
    post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purshase_price)
    # Update actual value
-   get_last_cmc(dbconnect,headers,90) #TODO update the time to 15  
+   get_last_cmc(dbconnect,headers,refresh_in_minutes) #TODO update the time to 15  
    get_crypto_synthesis(dbconnect)
    #return redirect('/cryptoAdd2')
    return render_template('crypto_add_confirm.html')
