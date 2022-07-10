@@ -211,7 +211,7 @@ def wallet_delete_line2(id):
 @app.route('/delete_transaction/<id>', methods=['POST', 'GET'])
 def wallet_delete_line(id):
    try:
-      transaction_delete = get_datas_delete_transaction(cursor,id)
+      transaction_delete = get_datas_delete_transaction(dbconnect,id)
       return render_template('crypto_delete_confirmation.html', transaction_delete = transaction_delete)       
    except Exception as e:
       error_message(e)

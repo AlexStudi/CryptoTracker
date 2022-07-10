@@ -21,11 +21,14 @@ def post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purchase_price):#,
         
         post_transaction("1", "2", "10000", "2022-02-01")
     """
-    datas = (crypto_id, crypto_qty, crypto_purchase_price) #, crypto_purchase_date)
     #Save the transaction in the table wallet
+    datas = (crypto_id, crypto_qty, crypto_purchase_price) #, crypto_purchase_date)
     cursor = dbconnect.cursor()
     cursor.execute("""INSERT INTO wallet (id_crypto, purchase_qty, purchase_price, purchase_date) VALUES(%s,%s,%s,UTC_TIMESTAMP())""",datas)
     dbconnect.commit()
+    cursor.close()
+    #Save the id in actual datas if never used
+    cursor = dbconnect.cursor()
     datas =  [crypto_id]
     cursor.execute("""INSERT IGNORE INTO actual_datas (id_crypto) VALUES(%s);""", datas) #BUG added here removed from get last cmc
     dbconnect.commit()
@@ -67,6 +70,7 @@ def get_transactions_list(dbconnect):
         ORDER BY wallet.id_transaction DESC;
         """)
     wallet_value = cursor.fetchall()
+    cursor.close() #BUG added 22/07/09
     tuple_title = (
         'crypto_logo',
         'crypto_transaction_id',
@@ -81,7 +85,7 @@ def get_transactions_list(dbconnect):
     for i in wallet_value:
         if len(i) == len(tuple_title): 
             wallet.append(dict(zip(tuple_title,i)))
-    cursor.close() #BUG added 22/07/09
+    
     return wallet
 
 def update_transaction(dbconnect, id, qte, total_price):
@@ -117,7 +121,7 @@ def update_transaction(dbconnect, id, qte, total_price):
     dbconnect.commit()
     cursor.close()
     
-def get_datas_delete_transaction(cursor, id):
+def get_datas_delete_transaction(dbconnect, id):
     """Get the informations about the transaction that need to be delete
     in order to make a confirmation form.
 
@@ -136,6 +140,7 @@ def get_datas_delete_transaction(cursor, id):
         'crypto_purchase_price',
         'crypto_plus_value'
     """
+    cursor = dbconnect.cursor()
     datas = [id]
     cursor.execute("""
     SELECT
@@ -153,6 +158,7 @@ def get_datas_delete_transaction(cursor, id):
     WHERE wallet.id_transaction = %s;
     """, datas)
     transaction = cursor.fetchall()
+    cursor.close() #BUG added 22/07/09
     tuple_title = (
         'crypto_logo',
         'crypto_transaction_id',
@@ -167,7 +173,7 @@ def get_datas_delete_transaction(cursor, id):
     for i in transaction:
         if len(i) == len(tuple_title): 
             transaction_delete.append(dict(zip(tuple_title,i)))
-    cursor.close() #BUG added 22/07/09
+    
     return transaction_delete
 
 def delete_transaction(dbconnect, id):
@@ -207,6 +213,7 @@ def history_graph(path, path2, dbconnect):
    FROM history
    """)
    history = cursor.fetchall()
+   cursor.close()
    history = np.array(history, [
       ("date",'<M8[D]'),
       ("wallet_value","int_"),
@@ -269,7 +276,7 @@ def history_graph(path, path2, dbconnect):
       label.set(rotation=0, horizontalalignment='center')
    # Path of the history graph
    plt.savefig(path2, transparent=True) 
-   cursor.close() #BUG added 22/07/09
+   
    
 def get_crypto_synthesis(dbconnect):
     """
@@ -333,6 +340,7 @@ def get_crypto_synthesis(dbconnect):
       ORDER BY wallet.id_crypto;
       """)
     wallet_value = cursor.fetchall()
+    cursor.close()
         
     #with numpy
     wallet = np.array(wallet_value, [
@@ -358,17 +366,19 @@ def get_crypto_synthesis(dbconnect):
         #datas = [now]
 
         #Step 2 : Add the actual date in the history if it doesn't exist
+        cursor = dbconnect.cursor()
         cursor.execute("""
             INSERT IGNORE INTO history (date) VALUES(UTC_DATE())
         """)
         dbconnect.commit()
+        cursor.close()
         #cursor.close()#BUG
         
 
         #Step 3 : Update the history
         
         datas = [int(wallet.crypto_total_value.sum()), int(wallet.crypto_total_profit.sum())]#, now]
-        #cursor = dbconnect.cursor()#BUG
+        cursor = dbconnect.cursor()#BUG
         cursor.execute("""
             UPDATE history
             SET 
@@ -377,5 +387,6 @@ def get_crypto_synthesis(dbconnect):
             WHERE date = UTC_DATE()
         """,datas)
         dbconnect.commit()
-    cursor.close()#BUG remove 2022 07 09
+        cursor.close()
+    #BUG remove 2022 07 09
     return wallet
