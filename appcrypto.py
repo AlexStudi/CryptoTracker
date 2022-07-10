@@ -136,7 +136,8 @@ for table_name in TABLES:
 # Parameters
 refresh_in_minutes = 15 #refresh time for function get_last_cmc()
 lengh_crypto_list = 200
-
+cursor = dbconnect.cursor()
+cursor.close()
 # ===================================== crypto_tracker 
 @app.route("/")
 def cryptotracker():
