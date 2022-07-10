@@ -33,7 +33,7 @@ dbconnect = mysql.connector.connect(
    password=password, 
    database=database
    )
-cursor = dbconnect.cursor()
+
 
 # ===================================== connexion API cmc
 
@@ -104,6 +104,7 @@ def create_database(cursor):
         print("Failed creating database: {}".format(err))
         exit(1)
 
+cursor = dbconnect.cursor()
 try:
     cursor.execute("USE {}".format(DB_NAME))
 except mysql.connector.Error as err:
@@ -115,9 +116,9 @@ except mysql.connector.Error as err:
     else:
         print(err)
         exit(1)
-
+cursor.close()
 # After we successfully create or change to the target database, we create the tables by iterating over the items of the TABLES dictionary:
-
+cursor = dbconnect.cursor()
 for table_name in TABLES:
     table_description = TABLES[table_name]
     try:
@@ -130,14 +131,13 @@ for table_name in TABLES:
             print(err.msg)
     else:
         print("OK")
-
+cursor.close()
 # ===================================== Create database == END
 
 # Parameters
 refresh_in_minutes = 15 #refresh time for function get_last_cmc()
 lengh_crypto_list = 200
-cursor = dbconnect.cursor()
-cursor.close()
+
 # ===================================== crypto_tracker 
 @app.route("/")
 def cryptotracker():
