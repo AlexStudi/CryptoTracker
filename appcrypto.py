@@ -142,6 +142,8 @@ lengh_crypto_list = 200
 def cryptotracker():
    try:
       # Get the last update about crypto 
+      cursor = dbconnect.cursor()
+      cursor.close()
       get_last_cmc(dbconnect,headers,refresh_in_minutes)    #TODO update the time to 15  
       # Get the detail by crypto
       wallet_detailled = get_crypto_synthesis(dbconnect)
