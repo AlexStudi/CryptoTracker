@@ -45,6 +45,13 @@ finally:
       cursor.close()
    if dbconnect is not None:
       dbconnect.close()
+
+dbconnect = mysql.connector.connect(
+   host=host,
+   user=user,
+   password=password, 
+   database=database
+   )
 #
 
 # ===================================== connexion API cmc
@@ -246,4 +253,4 @@ def transaction_update(id):
       error_message(e)
 
 if __name__ == "__main__":
-   app.run( debug = True)
+   app.run()
