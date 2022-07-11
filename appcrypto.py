@@ -27,19 +27,25 @@ user = os.environ.get('DB_USER')
 password = os.environ.get('DB_PASSWORD')
 database = os.environ.get('DATABASE')
 
+#
 dbconnect = None
 cursor = None
-if cursor is not None:
-   cursor.close()
-if dbconnect is not None:
-   dbconnect.close()
-
-dbconnect = mysql.connector.connect(
-   host=host,
-   user=user,
-   password=password, 
-   database=database
-   )
+try:
+   dbconnect = mysql.connector.connect(
+      host=host,
+      user=user,
+      password=password, 
+      database=database
+      )
+   cursor = dbconnect.cursor()
+except Exception as error:
+   print(error)
+finally:
+   if cursor is not None:
+      cursor.close()
+   if dbconnect is not None:
+      dbconnect.close()
+#
 
 # ===================================== connexion API cmc
 
@@ -240,4 +246,4 @@ def transaction_update(id):
       error_message(e)
 
 if __name__ == "__main__":
-   app.run()
+   app.run( debug = True)
