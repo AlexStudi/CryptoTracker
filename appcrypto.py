@@ -27,6 +27,13 @@ user = os.environ.get('DB_USER')
 password = os.environ.get('DB_PASSWORD')
 database = os.environ.get('DATABASE')
 
+dbconnect = None
+cursor = None
+if cursor is not None:
+   cursor.close()
+if dbconnect is not None:
+   dbconnect.close()
+
 dbconnect = mysql.connector.connect(
    host=host,
    user=user,
@@ -34,9 +41,7 @@ dbconnect = mysql.connector.connect(
    database=database
    )
 
-
 # ===================================== connexion API cmc
-
 
 headers = {
     'Accepts': 'application/json',
