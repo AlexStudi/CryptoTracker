@@ -26,25 +26,25 @@ host = os.environ.get('DB_HOST')
 user = os.environ.get('DB_USER')
 password = os.environ.get('DB_PASSWORD')
 database = os.environ.get('DATABASE')
-
+database_url = os.getenv('CLEARDB_DATABASE_URL')
 #
 dbconnect = None
 cursor = None
-try:
-   dbconnect = mysql.connector.connect(
-      host=host,
-      user=user,
-      password=password, 
-      database=database
-      )
-   cursor = dbconnect.cursor()
-except Exception as error:
-   print(error)
-finally:
-   if cursor is not None:
-      cursor.close()
-   if dbconnect is not None:
-      dbconnect.close()
+#try:
+#   dbconnect = mysql.connector.connect(
+#      host=host,
+#      user=user,
+#      password=password, 
+#      database=database
+#      )
+#   cursor = dbconnect.cursor()
+#except Exception as error:
+#   print(error)
+#finally:
+#   if cursor is not None:
+#      cursor.close()
+#   if dbconnect is not None:
+#      dbconnect.close()
 
 dbconnect = mysql.connector.connect(
    host=host,
@@ -52,6 +52,7 @@ dbconnect = mysql.connector.connect(
    password=password, 
    database=database
    )
+cursor = dbconnect.cursor()
 #
 
 # ===================================== connexion API cmc
