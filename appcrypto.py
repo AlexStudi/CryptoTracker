@@ -158,11 +158,11 @@ refresh_in_minutes = 15 #refresh time for function get_last_cmc()
 lengh_crypto_list = 200
 
 # ===================================== crypto_tracker 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def cryptotracker():
    try:
       # Get the last update about crypto 
-      #BUG get_last_cmc(dbconnect,headers,refresh_in_minutes)    #TODO update the time to 15  
+      get_last_cmc(dbconnect,headers,refresh_in_minutes)     
       # Get the detail by crypto
       wallet_detailled = get_crypto_synthesis(dbconnect)
       return render_template('crypto_tracker.html',wallet_detailled=wallet_detailled)
@@ -174,7 +174,7 @@ def cryptotracker():
 def cryptoadd():
    try:
       # get de last list of crypto
-      crypto_currency_list = get_crypto_list(headers, lengh_crypto_list) #TODO update quantity if more currency needed
+      crypto_currency_list = get_crypto_list(headers, lengh_crypto_list)
       return render_template('crypto_add.html', crypto_currency = crypto_currency_list)
    except Exception as e:
       error_message(e)
@@ -189,19 +189,9 @@ def get_data_new_crypto_entry():
    # Save the transaction
    post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purshase_price)
    # Update actual value
-   #BUG get_last_cmc(dbconnect,headers,refresh_in_minutes) #TODO update the time to 15  
+   get_last_cmc(dbconnect,headers,refresh_in_minutes)  
    get_crypto_synthesis(dbconnect)
-   #return redirect('/cryptoAdd2')
    return render_template('crypto_add_confirm.html')
-
-# ===================================== crypto_add_confirm 
-#@app.route("/cryptoAdd2")
-#def crypto_add_new_entry():
-#   try:
-#      # Message to confirm the transaction is recorded in the database
-#      return render_template('crypto_Add_confirm.html')
-#   except Exception as e:
-#      error_message(e)
 
 # ===================================== crypto_history 
 @app.route("/crypto_history")

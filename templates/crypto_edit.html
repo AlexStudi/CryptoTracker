@@ -60,16 +60,15 @@
                         name="name" 
                         value="Modifier" 
                         onclick="return modifier(this.id)"
-                        class="button_g"
-                        >
+                        class="button_bb">
                             <img 
-                            
+                            id = "test"
                             class = "image_abc" 
-                            
                             src="../static/pictures/edit.PNG"
                             alt="édition" 
                             height="20">
                         </button>
+                                                    
                     </td>
                 </tr>
                 <tr class= "ligne"><!--ligne 3 :-->
@@ -86,7 +85,7 @@
             </form>
                     <td>
                         <form action="/delete_transaction/{{entry.crypto_transaction_id}}">
-                            <button type="submit" value="Supprimer" class="button_r">
+                            <button type="submit" value="Supprimer" class="button_br">
                                 <img 
                                 src="../static/pictures/bin.PNG" 
                                 alt="édition" 
@@ -111,8 +110,11 @@
     function modifier(clicked_id) {
         value = document.getElementById(clicked_id).value;
         if (value === 'Modifier') {
+            
             document.getElementById(clicked_id).value = 'Valider';
-            document.getElementById(clicked_id).style.backgroundColor = '#1fc36c' /*vert*/
+            document.getElementById('test').src = "../static/pictures/save.PNG";
+            document.getElementById(clicked_id).style.backgroundColor = '#1fc36c' /*vert*/;
+            
             document.getElementsByClassName(clicked_id)[0].disabled = false;
             document.getElementsByClassName(clicked_id)[1].disabled = false;
             

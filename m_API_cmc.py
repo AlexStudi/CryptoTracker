@@ -20,14 +20,9 @@ def get_last_cmc(dbconnect, headers, refresh=60):
         WHERE TIMESTAMPDIFF(MINUTE, actual_datas.update_date_time, UTC_TIMESTAMP()) > %s OR update_date_time IS NULL
     """, refresh)
     get_update_datetime_by_id = cursor.fetchall()
-    print(get_update_datetime_by_id )
-    #if get_update_datetime_by_id == [] :
-    #    pass
-    
-    #cursor.close()#BUG
-    print("test 1 get_last_cmc")#TODO delete
+    cursor.close()
+
     for i in get_update_datetime_by_id:
-        print("test 2 get_last_cmc, update of the id", i)#TODO delete
         session = Session()
         session.headers.update(headers)
         url = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest'
@@ -55,7 +50,7 @@ def get_last_cmc(dbconnect, headers, refresh=60):
         # Save into actual_datas table
         #date = datetime.now()
         datas = (price,percent_change_24h,percent_change_7d,tendancy_24h,tendancy_7d,symbol,name,i[0]) #Try date replaced by last_updated
-        #cursor = dbconnect.cursor() #BUG
+        cursor = dbconnect.cursor() #BUG
         cursor.execute("""
             UPDATE actual_datas
             SET 
@@ -71,7 +66,7 @@ def get_last_cmc(dbconnect, headers, refresh=60):
             WHERE id_crypto = %s
             """, datas)
         dbconnect.commit()
-        #cursor.close()#BUG
+        cursor.close()#BUG
 
         # Step 4 : Get the crypto logo & save it in the database
         url_logo = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info'
@@ -82,15 +77,16 @@ def get_last_cmc(dbconnect, headers, refresh=60):
         logo_link = json.loads(response_logo.text)['data'][str(i[0])]['logo'] #recupération du logo
         datas = (logo_link,i[0])
         # Save logo into actual_datas table
-        #cursor = dbconnect.cursor() #BUG
+        cursor = dbconnect.cursor() #BUG
         cursor.execute("""
             UPDATE actual_datas
             SET logo =  %s
             WHERE id_crypto = %s;
             """,datas)
+        cursor.close()
         dbconnect.commit()
         print("id_",i[0]," updated")
-    cursor.close()#BUG
+    #BUG
 
 def get_crypto_list(headers, limit=100):
     

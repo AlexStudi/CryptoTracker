@@ -103,7 +103,7 @@ input:focus{
 }
 
 /*BUTTON*/
-.button, .button_r, .button_g, .button_bigger_r, .button_bigger_g {
+.button, .button_r, .button_g, .button_bigger_r, .button_bigger_g, .button_br,.button_bb {
     background-color: #1fc36c;
     border: none;
     color: white;
@@ -130,12 +130,22 @@ input:focus{
 .button_r:hover, .button_bigger_r:hover {
     background-color: #db3e33;
 }
+.button_br,.button_bb {
+    background-color: #100f0f;
+    color:white;
+}
 .button_g, .button_bigger_g {
     background-color: #efefefb0;
     color:#100f0f;
 }
 .button_g:hover, .button_bigger_g:hover {
     background-color: #c7c7c7b0;
+}
+.button_br:hover {
+    background-color: #db3e33;
+}
+.button_bb:hover {
+    background-color: #4255e6;
 }
 .button_transparent {
     background-color: #100f0f;
