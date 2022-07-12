@@ -161,13 +161,10 @@ lengh_crypto_list = 200
 def cryptotracker():
    try:
       # Get the last update about crypto 
-      get_last_cmc(dbconnect,headers,refresh_in_minutes)    #TODO update the time to 15  
+      #BUG get_last_cmc(dbconnect,headers,refresh_in_minutes)    #TODO update the time to 15  
       # Get the detail by crypto
       wallet_detailled = get_crypto_synthesis(dbconnect)
-      if wallet_detailled == None or wallet_detailled == []:
-         return render_template('crypto_error.html')
-      else:
-         return render_template('crypto_tracker.html',wallet_detailled=wallet_detailled)
+      return render_template('crypto_tracker.html',wallet_detailled=wallet_detailled)
    except Exception as e:
       error_message(e)
 
@@ -191,7 +188,7 @@ def get_data_new_crypto_entry():
    # Save the transaction
    post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purshase_price)
    # Update actual value
-   get_last_cmc(dbconnect,headers,refresh_in_minutes) #TODO update the time to 15  
+   #BUG get_last_cmc(dbconnect,headers,refresh_in_minutes) #TODO update the time to 15  
    get_crypto_synthesis(dbconnect)
    #return redirect('/cryptoAdd2')
    return render_template('crypto_add_confirm.html')
