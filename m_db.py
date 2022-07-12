@@ -360,7 +360,8 @@ def get_crypto_synthesis(dbconnect):
 
     #if the wallet is empty, there is nothing to update in the history
     if len(wallet)==0: 
-        wallet = []
+        wallet = ['Empty Set']
+        return wallet
     else:   
         #now = (dt.datetime.now()).strftime("%Y-%m-%d")
         #datas = [now]
@@ -388,5 +389,5 @@ def get_crypto_synthesis(dbconnect):
         """,datas)
         dbconnect.commit()
         cursor.close()
-    #BUG remove 2022 07 09
-    return wallet
+        #BUG remove 2022 07 09
+        return wallet
