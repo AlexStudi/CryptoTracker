@@ -5,7 +5,7 @@ import json
 from requests import Session
 import json
 from operator import itemgetter
-
+import psycopg2
 
 def get_last_cmc(dbname, user, password, hostname, headers, refresh=60): # Ok fonctionne en PG
     refresh = [refresh]
