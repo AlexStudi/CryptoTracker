@@ -7,19 +7,20 @@ import matplotlib.dates as mdates
 import json
   
 
-def post_transaction(dbname, user, password, hostname, crypto_id, crypto_qty, crypto_purchase_price):# Ok fonctionne en PG
-    """Save a transaction in the data base
+def post_transaction(dbname, user, password, hostname, crypto_id, crypto_qty, crypto_purchase_price):
+    """
+    Save a transaction in the data base at the UTC datetime
     
     Args:
-        crypto_id (int) : official id of the crypto
-        crypto_qty (float) : _
-        crypto_purchase_price (float) : the purchase price is the total price
-        crypto_purchase_date (date) : (by default) the actual date
+        - dbname : PG database name
+        - user : PG user
+        - password : PG password
+        - hostname : PG hostname
+        - crypto_id (int) : official id of the crypto
+        - crypto_qty (float) : 
+        - crypto_purchase_price (float) : the purchase price is the total price
 
-    Exemples:
-        To post the following transaction : Buy 2 bitcoin(id=1) for 10000€ on the 1st february 2022. Execute the following
-        
-        post_transaction("1", "2", "10000", "2022-02-01")
+    Return : None
     """
     #Save the transaction in the table wallet
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=hostname)
@@ -38,16 +39,18 @@ def post_transaction(dbname, user, password, hostname, crypto_id, crypto_qty, cr
 
     conn.close()
 
-def delete_transaction(dbname, user, password, hostname, id): # Ok fonctionne en PG
-    """Delete forever a transaction from the table wallet
+def delete_transaction(dbname, user, password, hostname, id): 
+    """
+    Delete a transaction from the table wallet
 
     Args:
-    dbconnect :paramètres de connexion à la DB :
-        dbconnect = mysql.connector.connect(host="",user="######",password="######", database="######")
-    id : id of the transaction that need to be deleted
+        - dbname : PG database name
+        - user : PG user
+        - password : PG password
+        - hostname : PG hostname
+        - id : id of the transaction that need to be deleted
 
-    Return :
-        none    
+    Return : None    
     """
     datas = [id]
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=hostname)
@@ -58,26 +61,20 @@ def delete_transaction(dbname, user, password, hostname, id): # Ok fonctionne en
     conn.close()
     return id
 
-def update_transaction(dbname, user, password, hostname, id, qte, total_price): # Ok fonctionne en PG
-    """Update for a transaction the crypto quantity bought and/or the total price
+def update_transaction(dbname, user, password, hostname, id, qte, total_price): 
+    """
+    Update in the database for a transaction id the crypto quantity and/or the total price
     
     Args:
-        dbconnect : paramètres de connexion à la DB :
-            dbconnect = mysql.connector.connect(host="",user="######",password="######", database="######")
-        id : id of the transaction that need to be updated
-        qte : new qty of crypto monnaie 
-        total_price : new total price
+        - dbname : PG database name
+        - user : PG user
+        - password : PG password
+        - hostname : PG hostname
+        - id : id of the transaction that need to be updated
+        - qte : new qty of crypto monnaie 
+        - total_price : new total price
 
-    Return for each transaction :
-                'crypto_logo',
-                'crypto_transaction_id',
-                'crypto_transaction_date',
-                'crypto_qty', 
-                'crypto_symbol', 
-                'crypto_name', 
-                'crypto_purchase_price',
-                'crypto_plus_value'
-
+    Return : None
     """
     datas = [qte, total_price, id]
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=hostname)
@@ -93,24 +90,26 @@ def update_transaction(dbname, user, password, hostname, id, qte, total_price): 
             curs.execute("COMMIT;")
     conn.close()
     
-def get_datas_delete_transaction(dbname, user, password, hostname, id): # Ok fonctionne en PG : TODO revoir format purchase_qty
-    """Get the informations about the transaction that need to be delete
-    in order to make a confirmation form.
+def get_datas_delete_transaction(dbname, user, password, hostname, id): # : TODO revoir format purchase_qty
+    """
+    Return the informations about the transaction that need to be delete in the database
 
     Args:
-    dbconnect :paramètres de connexion à la DB :
-        dbconnect = mysql.connector.connect(host="",user="######",password="######", database="######")
-    id : id of the transaction that need to be deleted
+        - dbname : PG database name
+        - user : PG user
+        - password : PG password
+        - hostname : PG hostname
+        - id : id of the transaction that need to be deleted
 
-    Return a dictionary:
-        'crypto_logo',
-        'crypto_transaction_id',
-        'crypto_transaction_date',
-        'crypto_qty', 
-        'crypto_symbol', 
-        'crypto_name', 
-        'crypto_purchase_price',
-        'crypto_plus_value'
+    Return dictionary:
+        - crypto_logo
+        - crypto_transaction_id
+        - crypto_transaction_date
+        - crypto_qty 
+        - crypto_symbol 
+        - crypto_name 
+        - crypto_purchase_price
+        - crypto_plus_value
     """
     
     datas = [id]
@@ -151,40 +150,33 @@ def get_datas_delete_transaction(dbname, user, password, hostname, id): # Ok fon
     
     return transaction_delete
   
-def get_crypto_synthesis(dbname, user, password, hostname): # Ok fonctionne en PG
+def get_crypto_synthesis(dbname, user, password, hostname): 
     """
-    Get the last wallet total value & total profits 
-    Save these values in the history table
+    This function make 2 actions :
+    - Step 1 : Get the last wallet value & profits 
+        - Calculation of these values by crypto id
+        - The calculation is based on tables wallet and actual_datas
+    - Step 2 & 3 : Save these values in the history table
+        - Only the latest calculation of the day is kept in the history (one value per day)
 
-    Step 1 : Calculate value & profits from the database
-    If there is datas in the data bases 
-    Step 2 : Add the atual date(=key) in the history if doesn't exist
-    Step 3 : Update the profit and loss
+    Args:
+        - dbname : PG database name
+        - user : PG user
+        - password : PG password
+        - hostname : PG hostname
 
-    Comment : the history table can be be updated many times per day each time there is :
-        an additive transaction
-        a transaction update
-        a transaction delete
-        an update of the table actual_datas with new crypto rates
-
-    Parameters :
-        dbconnect : database connexion parameters 
-    
-    Example : 
-        dbconnect = mysql.connector.connect(host="",user="######",password="######", database="######")
-
-    Return following arguments :
-        ("crypto_logo","U250"),
-        ("crypto_actual_value","int_"),
-        ("crypto_qty","float32"),
-        ("crypto_symbol","U10"),
-        ("crypto_name","U30"),
-        ("crypto_total_value","int_"),
-        ("crypto_total_profit","int_"),
-        ("percent_change_24h","float32"),
-        ("percent_change_7d","float32"),
-        ("tendancy_24h","U250"),
-        ("tendancy_7d","U250")
+    Return:
+        - crypto_logo
+        - crypto_actual_value
+        - crypto_qty
+        - crypto_symbol
+        - crypto_name
+        - crypto_total_value
+        - crypto_total_profit
+        - percent_change_24h
+        - percent_change_7d
+        - tendancy_24h
+        - tendancy_7d
     """
     
     # Step 1 : Value and profit calculation
@@ -261,14 +253,22 @@ def get_crypto_synthesis(dbname, user, password, hostname): # Ok fonctionne en P
 
         return wallet
 
-def history_graph(path, path2, dbname, user, password, hostname): # Ok fonctionne en PG
+def history_graph(path, path2, dbname, user, password, hostname): 
     """
-    Graph visualisation value history
+    Save 2 graphs : 
+        - history of the wallet value 
+        - history of the wallet loss and profit
 
-    parameters :
-            path : path of the png graph
-            cursor : cursor parameters to access to the database"""
+    Args:
+        - path : path of the wallet value history
+        - path2 : path of the wallet value profits
+        - dbname : PG database name
+        - user : PG user
+        - password : PG password
+        - hostname : PG hostname
 
+    Return : None
+    """
     # ============================= DATA EXTRACT FROM DB =============================
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=hostname)
     with conn:
@@ -342,23 +342,25 @@ def history_graph(path, path2, dbname, user, password, hostname): # Ok fonctionn
     # Path of the history graph
     plt.savefig(path2, transparent=True) 
 
-def get_transactions_list(dbname, user, password, hostname): #Ok fonctionne en PG
-    """Get the détail of the transaction saved in the database
-    
+def get_transactions_list(dbname, user, password, hostname):
+    """
+    Return all the transactions details saved in the database in the table wallet
+
     Args:
-        dbconnect :paramètres de connexion à la DB :
-        dbconnect = mysql.connector.connect(host="",user="######",password="######", database="######")
+        - dbname : PG database name
+        - user : PG user
+        - password : PG password
+        - hostname : PG hostname
 
     Return for each transaction :
-                'crypto_logo',
-                'crypto_transaction_id',
-                'crypto_transaction_date',
-                'crypto_qty', 
-                'crypto_symbol', 
-                'crypto_name', 
-                'crypto_purchase_price',
-                'crypto_plus_value'
-
+        - crypto_logo
+        - crypto_transaction_id
+        - crypto_transaction_date
+        - crypto_qty
+        - crypto_symbol
+        - crypto_name
+        - crypto_purchase_price
+        - crypto_plus_value
     """
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=hostname)
     with conn:
@@ -367,7 +369,7 @@ def get_transactions_list(dbname, user, password, hostname): #Ok fonctionne en P
             SELECT
                 actual_datas.logo,
                 wallet.id_transaction,
-                CAST(wallet.purchase_date AS DATE) ,
+                CAST(wallet.purchase_date AS DATE),
                 ROUND(wallet.purchase_qty,3), 
                 actual_datas.symbol,
                 actual_datas.name,

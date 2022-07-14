@@ -7,7 +7,25 @@ import json
 from operator import itemgetter
 import psycopg2
 
-def get_last_cmc(dbname, user, password, hostname, headers, refresh=60): # Ok fonctionne en PG
+def get_last_cmc(dbname, user, password, hostname, headers, refresh=60):
+    """
+    Update the actual_datas table. 
+        - This table contain all the last informations about all crypto contained in the wallet table
+        - The crypto datas are updated only :
+            - if the crypto_id need to be updated for the first time
+            - or if the crypto_id is not updated since [refresh] minutes
+    
+    Args:
+        - dbname : PG database name
+        - user : PG user
+        - password : PG password
+        - hostname : PG hostname
+        - headers : connexion to the API CoinMarketCap
+        - refresh : 60 minutes by default : by default the datas are updated if last refresh is more than 60 minutes
+            - The parameter "refresh" makes it possible to request the API wisely and save API tokens (The free API permits 333request/day)
+
+    Return : None
+    """
     refresh = [refresh]
     # The list of crypto 
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=hostname)
@@ -97,7 +115,16 @@ def get_last_cmc(dbname, user, password, hostname, headers, refresh=60): # Ok fo
       
 
 def get_crypto_list(headers, limit=100):
+    """
+    Return a list of crypto currency from the API CoinMarketCap
     
+    Args:
+        - headers : connexion to the API CoinMarketCap
+        - limit (100 by default) : lenght of the crypto_list
+
+    Return : 
+        - List of crypto currency
+    """
     #API parameters
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/map'
     parameters = {
