@@ -3,9 +3,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from mysql.connector import errorcode
-from datetime import datetime
-import datetime as dt
+
+#from mysql.connector import errorcode
+#from datetime import datetime
+#import datetime as dt
 
 def post_transaction(dbconnect, crypto_id, crypto_qty, crypto_purchase_price):#, crypto_purchase_date=(datetime.now()).strftime("%Y-%m-%d")):
     """Save a transaction in the data base
@@ -360,7 +361,7 @@ def get_crypto_synthesis(dbconnect):
 
     #if the wallet is empty, there is nothing to update in the history
     if len(wallet)==0: 
-        wallet = ['Empty Set']
+        wallet = None
         return wallet
     else:   
         #now = (dt.datetime.now()).strftime("%Y-%m-%d")
