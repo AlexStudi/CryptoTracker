@@ -179,7 +179,7 @@ def get_crypto_synthesis(dbname, user, password, hostname):
         - tendancy_7d
     """
     
-    # Step 1 : Value and profit calculation
+    # Value and profit calculation
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=hostname)
     with conn:
         with conn.cursor() as curs:
@@ -206,7 +206,7 @@ def get_crypto_synthesis(dbname, user, password, hostname):
             wallet_value = curs.fetchall()
     conn.close()
         
-    #with numpy
+    # with numpy
     wallet = np.array(wallet_value, [
         ("crypto_id","int_"),
         ("crypto_logo","U250"),
@@ -227,7 +227,7 @@ def get_crypto_synthesis(dbname, user, password, hostname):
         wallet = None
         return wallet
     else:   
-        #Step 2 : Add the actual date in the history if it doesn't exist
+        #Add the actual date in the history if it doesn't exist
         conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=hostname)
         with conn:
             with conn.cursor() as curs:
@@ -236,7 +236,7 @@ def get_crypto_synthesis(dbname, user, password, hostname):
                     """)
                 curs.execute("COMMIT;")
         conn.close()
-        #Step 3 : Update the history
+        #Update the history
         datas = [int(wallet.crypto_total_value.sum()), int(wallet.crypto_total_profit.sum())]#, now]
         conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=hostname)
         with conn:
@@ -276,6 +276,7 @@ def history_graph(path, path2, dbname, user, password, hostname):
             curs.execute("""
                 SELECT * 
                 FROM history
+                ORDER BY date
                 """)
             history = curs.fetchall()
     conn.close()

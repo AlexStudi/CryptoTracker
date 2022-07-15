@@ -2,6 +2,7 @@ from __future__ import print_function
 import os
 from flask import Flask, redirect, render_template, request
 import psycopg2
+from datetime import date
 
 from m_API_cmc_PG import get_last_cmc
 from m_API_cmc_PG import get_crypto_list
@@ -95,7 +96,7 @@ def crypto_history():
    try:
       values = get_crypto_synthesis(dbname, user, password, hostname)
       history_graph("./static/pictures/History.png","./static/pictures/History2.png",dbname, user, password, hostname)
-      return render_template('crypto_history.html', values=values)
+      return render_template('crypto_history.html', values=values, day=date.today())
    except Exception as e:
       error_message(e)
 

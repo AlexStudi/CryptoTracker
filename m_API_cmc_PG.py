@@ -27,7 +27,7 @@ def get_last_cmc(dbname, user, password, hostname, headers, refresh=60):
     Return : None
     """
     refresh = [refresh]
-    # The list of crypto 
+    # Get the list of crypto that need to be updated only
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=hostname)
     with conn:
         with conn.cursor() as curs:
@@ -37,24 +37,25 @@ def get_last_cmc(dbname, user, password, hostname, headers, refresh=60):
                 JOIN wallet
                 ON wallet.id_crypto = actual_datas.id_crypto
                 WHERE (EXTRACT(EPOCH FROM (current_timestamp - actual_datas.update_date_time))/60) > %s OR update_date_time IS NULL
-                            """, refresh)
+                """, refresh)
             get_update_datetime_by_id = curs.fetchall()
     conn.close()
 
     if get_update_datetime_by_id == []:
         return "Empty Set"
     else:
+        # Get the last information about crypto list
         for i in get_update_datetime_by_id:
             session = Session()
             session.headers.update(headers)
             url = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest'
-            convert_id = '2790' #2790 code pour convertir en euros
+            convert_id = '2790' #2790 = euros convert
             parameters = {
                 'id':i[0],
                 'convert_id':convert_id
             }
             response = session.get(url, params=parameters)
-            actual_value = (json.loads(response.text)['data'][str(i[0])]) # get dictionnary for id
+            actual_value = (json.loads(response.text)['data'][str(i[0])])
             percent_change_24h = actual_value['quote'][str(convert_id)]['percent_change_24h']
             percent_change_7d = actual_value['quote'][str(convert_id)]['percent_change_7d']
             price = actual_value['quote'][str(convert_id)]['price']
@@ -69,9 +70,8 @@ def get_last_cmc(dbname, user, password, hostname, headers, refresh=60):
             else:
                 tendancy_7d = "./static/pictures/graph_down.PNG"
             
-            # Save into actual_datas table
-            #date = datetime.now()
-            datas = (price,percent_change_24h,percent_change_7d,tendancy_24h,tendancy_7d,symbol,name,i[0]) #Try date replaced by last_updated
+            # Save/update into actual_datas table
+            datas = (price,percent_change_24h,percent_change_7d,tendancy_24h,tendancy_7d,symbol,name,i[0])
             conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=hostname)
             with conn:
                 with conn.cursor() as curs:
@@ -92,7 +92,7 @@ def get_last_cmc(dbname, user, password, hostname, headers, refresh=60):
                     curs.execute("COMMIT;")
             conn.close()
 
-            # Step 4 : Get the crypto logo & save it in the database
+            # Get the crypto logo 
             url_logo = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info'
             parameters_logo = {
                 'id':i[0]
@@ -112,7 +112,6 @@ def get_last_cmc(dbname, user, password, hostname, headers, refresh=60):
                     curs.execute("COMMIT;")
             conn.close()
             print("id_",i[0]," updated")
-      
 
 def get_crypto_list(headers, limit=100):
     """
@@ -128,7 +127,6 @@ def get_crypto_list(headers, limit=100):
     #API parameters
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/map'
     parameters = {
-        
         'aux':"", #when empty remove : "platform,first_historical_data,last_historical_data,is_active" 
         'sort':"cmc_rank", #sort by rank (id by default)
         'limit':str(limit)
