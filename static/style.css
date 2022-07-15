@@ -209,3 +209,14 @@ table, th, td, .ligne {
     width:140px; 
 }
 
+@media (max-width: 3000px){
+    .graphs{
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 500px){
+    .graphs{
+        width: 95%;
+    }
+}
