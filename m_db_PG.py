@@ -121,7 +121,7 @@ def get_datas_delete_transaction(dbname, user, password, hostname, id): # : TODO
                     actual_datas.logo,
                     wallet.id_transaction,
                     CAST(wallet.purchase_date AS DATE),
-                    wallet.purchase_qty, 
+                    ROUND(wallet.purchase_qty,2), 
                     actual_datas.symbol,
                     actual_datas.name,
                     wallet.purchase_price, 
