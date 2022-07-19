@@ -1,16 +1,4 @@
-function modifier(clicked_id) {
-    let value = document.getElementById(clicked_id).value;
-    if (value === 'Modifier') {
-        document.getElementById(clicked_id).value = 'Valider';
-        document.getElementById(clicked_id).style.backgroundColor = '#1fc36c' /*vert*/
-        document.getElementsByClassName(clicked_id)[0].disabled = false;
-        document.getElementsByClassName(clicked_id)[1].disabled = false;
-        
-    } else {
-        document.editForm.submit();
-    }
-    return false;
-}
+
 
 function color_number(tag_name) {
     // color the text between HTML tag
@@ -46,6 +34,24 @@ function numStr(tag_name) {
  color_number("crypto_unik_id_colored")
  numStr("crypto_unik_id_colored")
  numStr("crypto_unik_id")
+
+
+function modifier(clicked_id) {
+    let value = document.getElementById(clicked_id).value;
+    let id = document.getElementById(clicked_id).id;
+    if (value === 'Modifier') {
+        document.getElementById(id).value = 'Valider';
+        document.getElementById('update'+id).src = "../static/pictures/save.PNG";
+        document.getElementById(id).style.backgroundColor = '#1fc36c' /*vert*/;
+        document.getElementsByClassName(id)[0].disabled = false;
+        document.getElementsByClassName(id)[1].disabled = false;
+        
+    } else {
+        document.editForm.submit();
+    }
+    return false;
+}
+/*document.getElementById(clicked_id).getElementsByClassName('image_abc').src = "../static/pictures/save.PNG";*/
 
 
 

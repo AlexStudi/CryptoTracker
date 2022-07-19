@@ -62,7 +62,7 @@
                         onclick="return modifier(this.id)"
                         class="button_bb">
                             <img 
-                            id = "test"
+                            id = "update{{entry.crypto_transaction_id}}"
                             class = "image_abc" 
                             src="../static/pictures/edit.PNG"
                             alt="édition" 
@@ -106,25 +106,7 @@
 {% endif %}
 
 
-<script>
-    function modifier(clicked_id) {
-        value = document.getElementById(clicked_id).value;
-        if (value === 'Modifier') {
-            
-            document.getElementById(clicked_id).value = 'Valider';
-            document.getElementById('test').src = "../static/pictures/save.PNG";
-            document.getElementById(clicked_id).style.backgroundColor = '#1fc36c' /*vert*/;
-            
-            document.getElementsByClassName(clicked_id)[0].disabled = false;
-            document.getElementsByClassName(clicked_id)[1].disabled = false;
-            
-        } else {
-            document.editForm.submit();
-        }
-        return false;
-    }
 
-</script>
 
 
 
