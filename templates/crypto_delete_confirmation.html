@@ -10,7 +10,7 @@
             <form  action="/delete_transaction2/{{trans.crypto_transaction_id}}" method="get" >
                 <div class = "text_1 margetop">Voulez-vous supprimer définitivement la transaction n°{{trans.crypto_transaction_id}} ?</div>
                 <div class = "text_1">Date transaction : {{trans.crypto_transaction_date}}</div>
-                <div class="text_1">Montant transaction : {{trans.crypto_purchase_price}} €</div>
+                <div class="text_1">Montant transaction : {{trans.crypto_purchase_price}} &euro;</div>
                 <div class="text_2">
                     <img src="{{trans.crypto_logo}}" alt="logo {{trans.crypto_name}}" height="30">
                     <span>{{trans.crypto_qty}} {{trans.crypto_symbol}} </span>
