@@ -51,7 +51,3 @@ function modifier(clicked_id) {
     }
     return false;
 }
-/*document.getElementById(clicked_id).getElementsByClassName('image_abc').src = "../static/pictures/save.PNG";*/
-
-
-
