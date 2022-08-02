@@ -38,9 +38,6 @@ headers = {
 conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=hostname)
 with conn:
     with conn.cursor() as curs:
-        curs.execute("CREATE TABLE IF NOT EXISTS test (id serial PRIMARY KEY, num integer, data varchar);")
-with conn:
-    with conn.cursor() as curs:
         curs.execute("CREATE TABLE IF NOT EXISTS wallet (id_transaction serial PRIMARY KEY, id_crypto integer, purchase_qty decimal(30,15), purchase_price decimal(20,2), purchase_date timestamp without time zone default (now() at time zone 'utc'));")
 with conn:
     with conn.cursor() as curs:
