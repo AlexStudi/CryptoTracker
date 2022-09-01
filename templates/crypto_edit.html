@@ -24,8 +24,9 @@
 </div>
 
 <!--Liste des cryptos en portefeuille-->
+<section class="centre margetop">
 {% if wallet %}
-<table class ="margetop" aria-label="Liste crypto en portefeuille">
+<table aria-label="Liste crypto en portefeuille">
 
     <tbody><!--Contenu tableau-->   
         {% for entry in wallet %}
@@ -106,10 +107,5 @@
     <h1><img src="../static/pictures/chat_bubble.PNG" alt="Message information" height="25">  Votre portefeuille de crypto est vide</h1> <!--Message if no crypto in the wallet-->
     <p>Cliquez sur <img src="../static/pictures/add.PNG" alt="edtition" height="20"> pour ajouter une transaction</p>
 {% endif %}
-
-
-
-
-
-
+</section>
 {% endblock %}
